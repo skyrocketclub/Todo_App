@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>Home.qml</file>
+    </qresource>
+    <qresource prefix="/appImages">
+        <file>1a.jpg</file>
+        <file>2a.jpg</file>
+        <file>3a.jpg</file>
     </qresource>
 </RCC>
