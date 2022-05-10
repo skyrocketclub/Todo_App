@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Home.qml</file>
+        <file>Login.qml</file>
     </qresource>
     <qresource prefix="/appImages">
         <file>1a.jpg</file>

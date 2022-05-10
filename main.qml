@@ -8,7 +8,7 @@ Window {
     minimumHeight: 480
     minimumWidth: 640
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("TO DO APP")
 
     Loader{
         id: loader
@@ -16,7 +16,7 @@ Window {
         StackView{
             id: stack
             anchors.fill: parent
-            initialItem: "Home.qml"
+            initialItem: "Login.qml"
         }
     }
 }
