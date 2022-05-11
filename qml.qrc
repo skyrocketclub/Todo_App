@@ -3,10 +3,13 @@
         <file>main.qml</file>
         <file>Home.qml</file>
         <file>Login.qml</file>
+        <file>loading.qml</file>
+        <file>Register.qml</file>
     </qresource>
     <qresource prefix="/appImages">
         <file>1a.jpg</file>
         <file>2a.jpg</file>
         <file>3a.jpg</file>
+        <file>4a.jpg</file>
     </qresource>
 </RCC>

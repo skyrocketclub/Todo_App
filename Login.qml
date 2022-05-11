@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 2.3
 
 Item {
@@ -7,6 +7,8 @@ Item {
         color: "#2752a0"
 
         anchors.fill: parent
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
 
         Rectangle{
             id: loginBox
@@ -47,7 +49,7 @@ Item {
             Label {
                 id: email
                 color: "#f5e8e8"
-                text: qsTr("E-mail or Username")
+                text: qsTr("Username")
                 font.pointSize: 11
 
                 anchors{
@@ -75,30 +77,113 @@ Item {
 
                 TextInput {
                     id: textInput
-                    x: 80
-                    y: 146
-                    text: qsTr("")
-                    font.pixelSize: 25
+                    font.pixelSize: 15
+                    wrapMode: Text.Wrap
+                    renderType: Text.NativeRendering
                     font.italic: true
-                    anchors.fill: textFrame
                     color: "white"
+                    anchors.fill: parent
+                    focus: true
+                    activeFocusOnPress: true
+                    onEditingFinished: {
+                        passwordInput.focus = true
+                    }
+                    anchors{
+                        left: loginBox.left
+                        top: email.bottom
+                    }
+
+                }
+
+            }
+
+            Label {
+                id: password
+                color: "#f5e8e8"
+                text: qsTr("Password")
+                font.pointSize: 11
+
+                anchors{
+                    left: loginBox.left
+                    leftMargin: 10
+                    top: textFrame.bottom
+                    topMargin: 30
                 }
             }
 
+            Rectangle{
+                id: passwordFrame
+                width: loginBox.width - 50
+                height: 40
+                color: "#3f67c2"
+                border.color: "#130b0b"
+                border.width: 1
 
+                anchors{
+                    left: loginBox.left
+                    leftMargin: 10
+                    top: password.bottom
+                    topMargin: 5
+                }
 
-//            TextField {
-//                id: textfieldTab
-//                placeholderTextColor: "#b9a3a3"
-//                placeholderText: qsTr("Enter E-mail or Username")
+                TextInput {
+                    id: passwordInput
+                    text: qsTr("")
+                    anchors.fill: parent
+                    font.pixelSize: 15
+                    font.italic: true
+                    echoMode: TextInput.Password
+
+                    color: "white"
+                    onEditingFinished: {
+                       passwordInput.focus= false
+                        textInput.focus = true
+                    }
+                    anchors{
+                        left: loginBox.left
+                        top: password.bottom
+                    }
+                }
+            }
+
+            Button {
+                id: loginNow
+                x: 10
+                y: 290
+                height:50
+                width: loginBox.width - 50
+                text: qsTr("Login now")
 
 //                anchors{
-//                    left: loginBox.left
-//                    leftMargin: 10
-//                    top: email.bottom
-//                    topMargin: 5
+//                    top: passwordInput.bottom
+//                    topMargin: 20
 //                }
-//            }
+            }
+
+            Label{
+                id: register
+                color: "#f5e8e8"
+                text: qsTr("Click here to Register ->")
+                font.pointSize: 9
+                font.family: "Courier"
+                anchors{
+                    top: loginNow.bottom
+                    topMargin: 10
+                    left: loginBox.left
+                    leftMargin: 10
+                }
+
+                MouseArea {
+                    id: registerClick
+                    width: 100
+                    height: 100
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        //Take the user to the register page
+                    }
+                }
+            }
 
         }
     }
@@ -106,6 +191,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:480;width:640}
+    D{i:0;autoSize:true;height:480;width:640}D{i:7}
 }
 ##^##*/
