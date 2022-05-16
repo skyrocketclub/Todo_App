@@ -17,14 +17,14 @@ Item {
 
         Rectangle{
             id: imageRect
-            width: 40
-            height: 40
+            width: babaRect.width - 5
+            height: babaRect.width - 5
             anchors.centerIn: babaRect
 
             Image{
                 id: avatarImage
-                width: 40
-                height: 40
+//                width: 40
+//                height: 40
                 fillMode: Image.PreserveAspectFit
                 opacity: 1
                 anchors.fill: imageRect

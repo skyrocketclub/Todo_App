@@ -7,40 +7,52 @@ Item {
         id: backgroundImage
         source:"qrc:/appImages/3a.jpg"
         fillMode: Image.PreserveAspectFit
-        opacity: 0.5
+        opacity: 1
         anchors{
             fill: root
         }
 
+        //Dynamic
         Rectangle {
             id: frame
             width: parent.width/2 - 50
             height: parent.height - 50
             color: "white"
 
+
             anchors{
                 right: backgroundImage.right
-                rightMargin: 50
+                rightMargin: 100 //permissible dimension
                 verticalCenter: parent.verticalCenter
             }
 
             Column {
                 id: column
-                anchors.fill: parent
-                spacing: 10
+                anchors.fill: frame
+                spacing: 20
+                opacity: 1
 
+
+                //to be made dynamic
                 Label {
                     id: nickName
                     text: qsTr("What's your nickname?")
+                    font.pointSize: frame.height / 40
+                    font.family: "Courier"
+                    font.bold: true
                     anchors{
                         left: column.left
                         leftMargin: 10
                     }
                 }
 
+
+                //to be made dynamic
                 TextField {
                     id: nickNameEnter
-                    placeholderText: qsTr("Text Field")
+                    height: frame.height / 40
+                    width: column.width - 10
+                    placeholderText: qsTr("Typing? ...")
                     anchors{
                         left: column.left
                         leftMargin: 10
@@ -49,31 +61,35 @@ Item {
 
                 Label {
                     id: avartar
-                    text: qsTr("Choose your Avartar")
+                    text: qsTr("Choose your favorite Avatar")
+                    font.pointSize: frame.height / 40
+                    font.family: "Courier"
+                    font.bold: true
                     anchors{
                         left: column.left
                         leftMargin: 10
                     }
                 }
 
+
+                //to be made dynamic
                 Row {
                     id: avartarPick
                     width: column.width
-                    height: 50
-                    spacing: 5
+                    height: frame.height / 9
+                    spacing: 8
                     anchors{
                         left: column.left
                         leftMargin: 10
                     }
-                    //When you add avatars do not forget to
-                    /*
-                      1. Declare the source of the images
-                      2. Display the avatarNum (so that on clicked, the main.avatar = avatar.num
-                      */
+
+                    //to be made dynamic (all the Avatars)
                     MyAvatar{
                         id: av1
                         imageSource: "qrc:/avatar/Avatars/1.jpg"
                         avatarNum: 1
+                        width: avartarPick.height
+                        height: avartarPick.height
 
                         MouseArea{
                             id: clickAvatar1
@@ -83,7 +99,7 @@ Item {
                                 main.avatar = av1.avatarNum
                                 console.log ("The Avatar Number is: " + av1.avatarNum + " !")
 
-                                 av2.backgroundColor = "white"
+                                av2.backgroundColor = "white"
                                 av3.backgroundColor = "white"
                                 av4.backgroundColor = "white"
                                 av5.backgroundColor = "white"
@@ -94,6 +110,8 @@ Item {
                         id: av2
                         imageSource: "qrc:/avatar/Avatars/2.jpg"
                         avatarNum: 2
+                        width: avartarPick.height
+                        height: avartarPick.height
 
 
                         MouseArea{
@@ -116,6 +134,9 @@ Item {
                         id: av3
                         imageSource: "qrc:/avatar/Avatars/3.jpg"
                         avatarNum: 3
+                        width:avartarPick.height
+                        height: avartarPick.height
+
 
                         MouseArea{
                             id: clickAvatar3
@@ -136,6 +157,8 @@ Item {
                         id: av4
                         imageSource: "qrc:/avatar/Avatars/4.jpg"
                         avatarNum: 4
+                        width: avartarPick.height
+                        height: avartarPick.height
 
 
                         MouseArea{
@@ -157,6 +180,8 @@ Item {
                         id: av5
                         imageSource: "qrc:/avatar/Avatars/5.jpg"
                         avatarNum: 5
+                        width: avartarPick.height
+                        height: avartarPick.height
 
 
                         MouseArea{
