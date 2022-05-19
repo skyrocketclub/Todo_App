@@ -5,8 +5,8 @@ import QtQuick.Controls 2.3
 /*
   WHAT'S THE WORKORDER BRO?
 
-  1. Implement Dynamic Scaling for the Register Page
-  2. Make the bloddy Background Pure White okay?
+
+
   3. Make all the pages Dynamic okay??
   4. Continue with the other aspects
 
@@ -22,6 +22,7 @@ Window {
     visible: true
     title: qsTr("TO DO APP")
 
+    //Details of the user...
     property string nickname: ""
     property string password: ""
     property int avatar: 1

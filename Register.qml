@@ -16,7 +16,7 @@ Item {
         Rectangle {
             id: frame
             width: parent.width/2 - 50
-            height: parent.height - 50
+            height: parent.height - 150
             color: "white"
 
 
@@ -28,9 +28,13 @@ Item {
 
             Column {
                 id: column
-                anchors.fill: frame
+                height: 200
                 spacing: 20
                 opacity: 1
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
 
 
                 //to be made dynamic
@@ -43,6 +47,8 @@ Item {
                     anchors{
                         left: column.left
                         leftMargin: 10
+                        top: column.top
+                        topMargin: 20
                     }
                 }
 
@@ -51,11 +57,13 @@ Item {
                 TextField {
                     id: nickNameEnter
                     height: frame.height / 40
-                    width: column.width - 10
+                    width: column.width - 30
                     placeholderText: qsTr("Typing? ...")
                     anchors{
                         left: column.left
                         leftMargin: 10
+                        top: nickName.bottom
+                        topMargin: 20
                     }
                 }
 
@@ -68,6 +76,8 @@ Item {
                     anchors{
                         left: column.left
                         leftMargin: 10
+                        top: nickNameEnter.bottom
+                        topMargin: 20
                     }
                 }
 
@@ -81,6 +91,8 @@ Item {
                     anchors{
                         left: column.left
                         leftMargin: 10
+                        top: avartar.bottom
+                        topMargin: 20
                     }
 
                     //to be made dynamic (all the Avatars)
@@ -200,6 +212,47 @@ Item {
                         }
                     }
 
+                }
+                Label {
+                    id: password
+                    text: qsTr("Enter a secret pass")
+                    font.pointSize: frame.height / 40
+                    font.family: "Courier"
+                    font.bold: true
+                    anchors{
+                        left: column.left
+                        leftMargin: 10
+                        top: avartarPick.bottom
+                        topMargin: 20
+                    }
+                }
+
+
+                //to be made dynamic
+                TextField {
+                    id: passwordEnter
+                    height: frame.height / 40
+                    width: column.width - 30
+                    placeholderText: qsTr("Enter your password here ...")
+                    echoMode: "Password"
+                    anchors{
+                        left: column.left
+                        leftMargin: 10
+                        top: password.bottom
+                        topMargin: 20
+                    }
+                }
+
+                Button {
+                    id: nextButton
+                    width: column.width * 0.85
+                    text: qsTr("NEXT")
+                    font.family: "Courier"
+                    anchors{
+                        top: passwordEnter.bottom
+                        topMargin: 20
+                        horizontalCenter: parent.horizontalCenter
+                    }
                 }
             }
         }
