@@ -34,7 +34,7 @@ Window {
         StackView{
             id: stack
             anchors.fill: parent
-            initialItem: "Register.qml"
+            initialItem: "MainPage.qml"
         }
     }
 }
