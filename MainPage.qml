@@ -55,7 +55,17 @@ Item {
     Rectangle{
         id: background
         anchors.fill: parent
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
         color: "white"
+
+
+
+        ListModel{
+            id: todoModel
+        }
 
         Row {
             id: row
@@ -143,18 +153,168 @@ Item {
                     width: column.width
                     height: column.height - dateFrame.height
                     color: "#ffffff"
+
                     anchors{
                         top: dateFrame.bottom
                     }
 
-                    CheckBox {
-                        id: checkBox
-                        text: qsTr("Task to be done")
+                    ListView{
+                        id: taskSpace
+                        width: todoFrame.width
+                        height: todoFrame.height - functionTab.height
+                        spacing: 5
+                        model: todoModel
+                        anchors{
+                            top: todoFrame.top
+                            topMargin: 10
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        delegate: Rectangle{
+                            id: dlg
+                            width: todoFrame.width * 0.7
+                            height: functionTab.height * 0.7
+                            radius: 5
+                            color: "green"
+                            anchors.horizontalCenter: parent.horizontalCenter
+
+                            property string title
+                            property string des
+
+                            title: _title
+                            des: _des
+
+
+                            Column{
+                                id: dlgTexts
+                                anchors.fill: parent
+                                anchors.leftMargin: 20
+                                anchors.rightMargin: 50
+
+                                Text{
+                                    text: dlg.title
+                                    font.bold: true
+                                }
+                                Text{
+                                    text: dlg.des
+                                }
+                            }
+                        }
+
+                    }
+
+                    Row {
+                        id: functionTab
+                        width: todoFrame.width
+                        height: todoFrame.height / 4
+                        anchors{
+                            bottom: todoFrame.bottom
+                            left: todoFrame.left
+                        }
+
+                        Column {
+                            id: textBox
+                            width: todoFrame.width * 0.7
+                            height: functionTab.height
+                            spacing: 3
+                            visible: false
+                            anchors{
+                                left: todoFrame.left
+                                leftMargin: 15
+                            }
+
+                            Label {
+                                id: title
+                                text: qsTr("Title")
+                            }
+
+                            Row {
+                                id: titleEnterandButton
+                                width: todoFrame.width * 0.7
+                                height: textBox.height * 0.15
+                                spacing: 10
+                                anchors{
+                                    left: textBox.left
+                                }
+
+                                TextField {
+                                    id: enterTitle
+                                    placeholderText: qsTr("Enter the title here")
+                                    width: titleEnterandButton.width * 0.6
+                                    anchors{
+                                        verticalCenter: parent.verticalCenter
+                                    }
+                                }
+
+                                Button {
+                                    id: button
+                                    text: qsTr("ADD TO LIST")
+                                    width:  titleEnterandButton.width * 0.3
+                                    anchors{
+                                        verticalCenter: parent.verticalCenter
+                                    }
+                                    onClicked: {
+                                        textBox.visible = false
+                                        roundButton.visible = true
+//                                        title = enterTitle.text
+//                                        des = enterDescription.text
+                                        //_title is the key and entertitle... is the value and so on for the list model
+                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
+                                        enterTitle.text = ""
+                                        enterDescription.text = ""
+                                    }
+                                }
+                            }
+
+                            Label {
+                                id: description
+                                text: qsTr("Description")
+                            }
+
+                            Rectangle {
+                                id: enterDescriptionFrame
+                                width: textBox.width
+                                height: textBox.height - (10 + title.height + enterTitle.height + description.height)
+                                color: "#ffffff"
+
+
+                                TextField {
+                                    id: enterDescription
+                                    anchors.fill: parent
+                                    placeholderText: qsTr("Text Field")
+                                }
+                            }
+
+                        }
+
+                        RoundButton {
+                            id: roundButton
+                            width: textBox.height * 0.6
+                            height: textBox.height * 0.6
+                            text: "ADD"
+                            visible: true
+                            anchors{
+                                verticalCenter: textBox.verticalCenter
+                                right: functionTab.right
+                                rightMargin: 20
+                            }
+                            onClicked: {
+                                textBox.visible = true
+                                roundButton.visible = false
+                            }
+                        }
                     }
                 }
+
+
             }
         }
 
 
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
