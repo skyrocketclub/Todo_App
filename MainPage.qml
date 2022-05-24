@@ -2,10 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.3
 
 /*
-   - Make the Basic Layout consisting of
-  1      The User's Panel
-            - The Avartar is loaded here
-            - The Nickname is loaded here
+
         The To-Do Panel
             -Divided into two layouts
 
@@ -14,10 +11,7 @@ import QtQuick.Controls 2.3
 
   3            - The Main App Layout
 
-                    --- In this layout there //Consider Making use of ListViews to implement this aspect if opportune
-
-                        -The use clicks on the  + symbol to add a task
-                        - There is also a button called delete all
+                            - There is also a button called delete all
 
                         ############################################################################
                         ---> This looks like a custom Component will be created here called ---- TASKS
@@ -25,8 +19,6 @@ import QtQuick.Controls 2.3
 
 
 
-                           a.  Understand how ListView Works
-                           b.  Understand How to dynamically create objects in a listview
 
                                 Create a custom component called tasks
 
@@ -34,16 +26,13 @@ import QtQuick.Controls 2.3
                                     - A check box //try the check delegate to see if you can also cancel the text once the task is done
                                     - On hover, the option for Delete pops up ... also the icon for editing (pencil like) comes on as well
 
-                                    Create the Plus Button
-                                        Upon clicking the plus button, a text  area becomes visible.
-                                            Upon clicking enter,
-                                                A new "task" is created
+
 
                                     Create the Delete all Button
                                     { one on the left --------------- one on the right
 
 
-                                     If any of the tasks is double clicked, the text area appears again and the text can be editted then
+                                   ****  If any of the tasks is double clicked, the text area appears again and the text can be editted then
 
 
 
@@ -164,18 +153,30 @@ Item {
                         height: todoFrame.height - functionTab.height
                         spacing: 5
                         model: todoModel
-                        anchors{
-                            top: todoFrame.top
-                            topMargin: 10
-                            horizontalCenter: parent.horizontalCenter
-                        }
+//                        anchors{
+//                            top: dateFrame.bottom
+//                            topMargin: 10
+//                            bottom: functionTab.top
+//                            bottomMargin: 10
+//                            left: rectangle.right
+//                            leftMargin: 10
+
+//                        }
                         delegate: Rectangle{
                             id: dlg
-                            width: todoFrame.width * 0.7
-                            height: functionTab.height * 0.7
+                            width: todoFrame.width * 0.85
+                            height: functionTab.height * 0.20
                             radius: 5
-                            color: "green"
-                            anchors.horizontalCenter: parent.horizontalCenter
+                            color: "lightblue"
+//                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors{
+                                top: todoFrame.bottom
+                                topMargin: 20
+                                bottom: todoFrame.bottom
+                                bottomMargin: 20
+                                left: rectangle.right
+                                leftMargin: 20
+                            }
 
                             property string title
                             property string des
@@ -183,21 +184,94 @@ Item {
                             title: _title
                             des: _des
 
-
-                            Column{
-                                id: dlgTexts
+                            Row{
+                                id:taskRow
                                 anchors.fill: parent
-                                anchors.leftMargin: 20
-                                anchors.rightMargin: 50
 
-                                Text{
-                                    text: dlg.title
-                                    font.bold: true
-                                }
-                                Text{
-                                    text: dlg.des
-                                }
+                                    Column{
+                                        id: dlgTexts
+                                        width: taskRow.width * 0.8
+                                        height: taskRow.height
+
+                                        anchors{
+                                            rightMargin: 50
+                                            leftMargin: 20
+                                        }
+
+
+                                        Text{
+                                            text: dlg.title
+                                            font.bold: true
+                                        }
+                                        Text{
+                                            text: dlg.des
+                                        }
+                                    }
+                                    Row{
+                                        id: taskRowFunction
+
+                                        width: taskRow.width - dlgTexts.width
+                                        height: taskRow.height
+
+                                        anchors{
+                                            left: dlgTexts.right
+                                        }
+
+                                        Rectangle{
+                                            id: editBtn
+                                            height: taskRow.height
+                                            width: taskRowFunction.width * 0.5
+                                            color: "lightgray"
+                                            radius: 5
+//                                            visible: false
+                                            anchors{
+                                                left: taskRowFunction.left
+                                            }
+                                            Label{
+                                                id: editLbl
+                                                anchors.centerIn: parent
+                                                text: "Edit"
+                                            }
+                                            MouseArea{
+                                                id: editMouse
+                                                anchors.fill: parent
+                                                onClicked: {
+                                                    textBox.visible = true
+                                                    enterTitle.text = title
+                                                    enterDescription.text = des
+                                                    button.text = "SAVE EDIT"
+                                                    todoModel.remove(index)
+                                                }
+                                            }
+                                        }
+
+                                        Rectangle{
+                                            id: deleteBtn
+                                            height: taskRow.height
+                                            width: taskRowFunction.width * 0.5
+                                            color: "red"
+                                            radius: 5
+//                                            visible: false
+                                            anchors{
+                                                left: editBtn.right
+                                            }
+                                            Label{
+                                                id: deleteLbl
+                                                anchors.centerIn: parent
+                                                text: "delete"
+                                            }
+                                            MouseArea{
+                                                id: deleteMouse
+                                                anchors.fill: parent
+                                                onClicked: {
+                                                    todoModel.remove(index)
+                                                }
+                                            }
+                                        }
+                                    }
                             }
+
+
                         }
 
                     }
