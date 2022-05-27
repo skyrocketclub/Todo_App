@@ -35,6 +35,8 @@ import QtQuick.Controls 2.3
                                    ****  If any of the tasks is double clicked, the text area appears again and the text can be editted then
 
 
+                                   1. Sort out the text going out of bound
+                                   2. Try to find a way to increase the box size dynamically
 
 
 
@@ -151,11 +153,15 @@ Item {
                         id: taskSpace
                         width: todoFrame.width
                         height: todoFrame.height - functionTab.height
+                        interactive: true
+                        boundsBehavior: Flickable.StopAtBounds
+                        keyNavigationWraps: true
                         spacing: 5
+                        clip: true
                         model: todoModel
 //                        anchors{
 //                            top: dateFrame.bottom
-//                            topMargin: 10
+//                            topMargin: 50
 //                            bottom: functionTab.top
 //                            bottomMargin: 10
 //                            left: rectangle.right
@@ -165,15 +171,15 @@ Item {
                         delegate: Rectangle{
                             id: dlg
                             width: todoFrame.width * 0.85
-                            height: functionTab.height * 0.20
+                            height: taskSpace.height * 0.10
                             radius: 5
                             color: "lightblue"
-//                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
                             anchors{
                                 top: todoFrame.bottom
-                                topMargin: 20
+                                topMargin: 50
                                 bottom: todoFrame.bottom
-                                bottomMargin: 20
+                                bottomMargin: 50
                                 left: rectangle.right
                                 leftMargin: 20
                             }
@@ -187,29 +193,55 @@ Item {
                             Row{
                                 id:taskRow
                                 anchors.fill: parent
+//                                width: dlg.width
+//                                height: dlg.height
 
+                                //Mouse Area that Makes the Edit and Delete Button Visible
+                                MouseArea{
+                                    id:hoverMouse
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    onEntered: {
+                                        taskRowFunction.visible = true
+                                    }
+                                    onExited: {
+                                        taskRowFunction.visible = false
+                                    }
+                                }
                                     Column{
                                         id: dlgTexts
                                         width: taskRow.width * 0.8
                                         height: taskRow.height
+                                        spacing: 0.1
 
                                         anchors{
-                                            rightMargin: 50
-                                            leftMargin: 20
+                                            top: taskRow.top
+                                            bottom: taskRow.bottom
+                                            left: taskRow.left
+                                            leftMargin: 10
                                         }
 
 
-                                        Text{
+                                        Label{
+                                            id: titleShow
                                             text: dlg.title
-                                            font.bold: true
-                                        }
-                                        Text{
+                                            font.bold : true
+                                            font.pointSize: dlgTexts.height * 0.25
+                                            anchors.top: dlgTexts.top
+                                            anchors.topMargin: 0.1
+                                           }
+                                        Label{
                                             text: dlg.des
+                                            font.pointSize: dlgTexts.height * 0.20
+                                            anchors.top: titleShow.bottom
+                                            anchors.topMargin: 0.2
+
                                         }
+
                                     }
                                     Row{
                                         id: taskRowFunction
-
+                                        visible: false
                                         width: taskRow.width - dlgTexts.width
                                         height: taskRow.height
 
@@ -354,6 +386,8 @@ Item {
                                 TextField {
                                     id: enterDescription
                                     anchors.fill: parent
+                                    layer.mipmap: true
+                                    wrapMode: TextField.WrapAtWordBoundaryOrAnywhere
                                     placeholderText: qsTr("Text Field")
                                 }
                             }
