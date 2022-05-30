@@ -2,44 +2,11 @@ import QtQuick 2.0
 import QtQuick.Controls 2.3
 
 /*
+  TO DO literally
 
-        The To-Do Panel
-            -Divided into two layouts
-
-  2              - The Date Layout
-                    --- The Date Layout Which displays the current date and the time ... {Shall We}
-
-  3            - The Main App Layout
-
-                            - There is also a button called delete all
-
-                        ############################################################################
-                        ---> This looks like a custom Component will be created here called ---- TASKS
-                        This custom component of task will have the following attributes
-
-
-
-
-                                Create a custom component called tasks
-
-                                1. A rectangle with the following
-                                    - A check box //try the check delegate to see if you can also cancel the text once the task is done
-                                    - On hover, the option for Delete pops up ... also the icon for editing (pencil like) comes on as well
-
-
-
-                                    Create the Delete all Button
-                                    { one on the left --------------- one on the right
-
-
-                                   ****  If any of the tasks is double clicked, the text area appears again and the text can be editted then
-
-
-                                   1. Sort out the text going out of bound
-                                   2. Try to find a way to increase the box size dynamically
-
-
-
+  1. If the user enters an empty field, then make the title to be "Empty To-Do List"
+  2. Focus on the title, and on text accepted, focus on the description
+  3. Link all the qml pages together
   */
 
 Item {
@@ -231,11 +198,28 @@ Item {
                                             anchors.topMargin: 0.1
                                            }
                                         Label{
+                                            id: desShow
                                             text: dlg.des
                                             font.pointSize: dlgTexts.height * 0.20
                                             anchors.top: titleShow.bottom
                                             anchors.topMargin: 0.2
-
+                                            anchors.right: dlgTexts.right
+                                            anchors.rightMargin: 5
+                                            anchors.left: dlgTexts.left
+                                            anchors.leftMargin: 5
+                                            wrapMode: Label.WrapAtWordBoundaryOrAnywhere
+                                            onPaintedWidthChanged:{
+                                                if (paintedWidth>dlgTexts.width){
+                                                    titleShow.font.pointSize = titleShow.font.pointSize
+                                                    desShow.font.pointSize = desShow.font.pointSize
+                                                    dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight + 1
+                                                    dlg.height = desShow.paintedHeight + titleShow.paintedHeight + 1
+                                                }
+                                            }
+                                            onPaintedHeightChanged: {
+                                                dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight + 1
+                                                dlg.height = desShow.paintedHeight + titleShow.paintedHeight + 1
+                                            }
                                         }
 
                                     }
