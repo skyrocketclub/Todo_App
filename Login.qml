@@ -153,6 +153,10 @@ Item {
                 height:50
                 width: loginBox.width - 50
                 text: qsTr("Login now")
+                onClicked:{
+//                    stack.push("loading.qml")
+                     stack.push("MainPage.qml")
+                }
 
 //                anchors{
 //                    top: passwordInput.bottom
@@ -181,6 +185,7 @@ Item {
                     hoverEnabled: true
                     onClicked: {
                         //Take the user to the register page
+                        stack.push("Register.qml")
                     }
                 }
             }

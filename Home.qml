@@ -1,3 +1,4 @@
+
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 
@@ -85,6 +86,7 @@ Item {
 
                 onClicked: {
                     console.log("Next Page Activated")
+                    stack.push("Login.qml")
                 }
             }
         }

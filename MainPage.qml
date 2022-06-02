@@ -48,7 +48,7 @@ Item {
                     anchors{
                         top: rectangle.top
                         topMargin: 80
-                        horizontalCenter: parent.horizontalCenter
+//                        horizontalCenter: parent.horizontalCenter
                     }
 
                     Label {
@@ -90,7 +90,7 @@ Item {
                 Rectangle {
                     id: dateFrame
                     width: column.width
-                    height: column.height / 5
+                    height: column.height * 0.2
                     color: "#dcebf3"
                     anchors{
                         top: row.top
@@ -109,7 +109,7 @@ Item {
                 Rectangle {
                     id: todoFrame
                     width: column.width
-                    height: column.height - dateFrame.height
+                    height: column.height * 0.8 //
                     color: "#ffffff"
 
                     anchors{
@@ -126,27 +126,18 @@ Item {
                         spacing: 5
                         clip: true
                         model: todoModel
-//                        anchors{
-//                            top: dateFrame.bottom
-//                            topMargin: 50
-//                            bottom: functionTab.top
-//                            bottomMargin: 10
-//                            left: rectangle.right
-//                            leftMargin: 10
 
-//                        }
+                        anchors.top: todoFrame.top
+                        anchors.topMargin: 10
+
                         delegate: Rectangle{
                             id: dlg
                             width: todoFrame.width * 0.85
-                            height: taskSpace.height * 0.10
+                            height: todoFrame.height / 13
                             radius: 5
                             color: "lightblue"
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors{
-                                top: todoFrame.bottom
-                                topMargin: 50
-                                bottom: todoFrame.bottom
-                                bottomMargin: 50
                                 left: rectangle.right
                                 leftMargin: 20
                             }
@@ -159,9 +150,12 @@ Item {
 
                             Row{
                                 id:taskRow
-                                anchors.fill: parent
-//                                width: dlg.width
-//                                height: dlg.height
+                                height: parent.height
+
+                                anchors{
+                                    fill: parent
+                                }
+
 
                                 //Mouse Area that Makes the Edit and Delete Button Visible
                                 MouseArea{
@@ -177,15 +171,16 @@ Item {
                                 }
                                     Column{
                                         id: dlgTexts
-                                        width: taskRow.width * 0.8
-                                        height: taskRow.height
+                                        width: dlg.width * 0.8
+                                        height: dlg.height
                                         spacing: 0.1
 
                                         anchors{
                                             top: taskRow.top
                                             bottom: taskRow.bottom
+                                            bottomMargin: 5
                                             left: taskRow.left
-                                            leftMargin: 10
+                                            leftMargin: 8
                                         }
 
 
@@ -201,25 +196,34 @@ Item {
                                             id: desShow
                                             text: dlg.des
                                             font.pointSize: dlgTexts.height * 0.20
+
                                             anchors.top: titleShow.bottom
                                             anchors.topMargin: 0.2
-                                            anchors.right: dlgTexts.right
-                                            anchors.rightMargin: 5
-                                            anchors.left: dlgTexts.left
-                                            anchors.leftMargin: 5
+
+
                                             wrapMode: Label.WrapAtWordBoundaryOrAnywhere
-                                            onPaintedWidthChanged:{
-                                                if (paintedWidth>dlgTexts.width){
-                                                    titleShow.font.pointSize = titleShow.font.pointSize
-                                                    desShow.font.pointSize = desShow.font.pointSize
-                                                    dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight + 1
-                                                    dlg.height = desShow.paintedHeight + titleShow.paintedHeight + 1
-                                                }
-                                            }
-                                            onPaintedHeightChanged: {
-                                                dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight + 1
-                                                dlg.height = desShow.paintedHeight + titleShow.paintedHeight + 1
-                                            }
+//                                            onPaintedWidthChanged:{
+//                                                if (paintedWidth>dlgTexts.width){
+//                                                    dlgTexts.height = dlgTexts.height + 1 //increasing column size
+//                                                    dlg.height = dlgTexts.height
+//                                                }
+//                                                if (paintedWidth<dlgTexts.width){
+//                                                    dlgTexts.height = dlgTexts.height - 1 //increasing column size
+//                                                    dlg.height = dlgTexts.height
+//                                                }
+
+//                                            }
+//                                            onPaintedHeightChanged: {
+//                                                if (dlgTexts.height>dlg.height){
+////                                                    dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight + 1
+//                                                    dlg.height = dlgTexts.height
+//                                                }
+////                                                if (dlgTexts.height<dlg.height){
+//////                                                    dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight - 1
+////                                                    dlg.height = dlgTexts.height
+////                                                }
+
+//                                            }
                                         }
 
                                     }
@@ -298,7 +302,9 @@ Item {
                         height: todoFrame.height / 4
                         anchors{
                             bottom: todoFrame.bottom
+                            bottomMargin: 10
                             left: todoFrame.left
+                            leftMargin: 10
                         }
 
                         Column {
@@ -333,6 +339,11 @@ Item {
                                     anchors{
                                         verticalCenter: parent.verticalCenter
                                     }
+                                    focus: true
+                                    onAccepted: {
+                                        focus = false
+                                        enterDescription.focus = true
+                                    }
                                 }
 
                                 Button {
@@ -345,9 +356,6 @@ Item {
                                     onClicked: {
                                         textBox.visible = false
                                         roundButton.visible = true
-//                                        title = enterTitle.text
-//                                        des = enterDescription.text
-                                        //_title is the key and entertitle... is the value and so on for the list model
                                         todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
                                         enterTitle.text = ""
                                         enterDescription.text = ""
@@ -373,6 +381,14 @@ Item {
                                     layer.mipmap: true
                                     wrapMode: TextField.WrapAtWordBoundaryOrAnywhere
                                     placeholderText: qsTr("Text Field")
+                                    onAccepted: {
+                                        focus = false
+                                        textBox.visible = false
+                                        roundButton.visible = true
+                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
+                                        enterTitle.text = ""
+                                        enterDescription.text = ""
+                                    }
                                 }
                             }
 
@@ -392,6 +408,8 @@ Item {
                             onClicked: {
                                 textBox.visible = true
                                 roundButton.visible = false
+                                enterTitle.focus = true
+
                             }
                         }
                     }

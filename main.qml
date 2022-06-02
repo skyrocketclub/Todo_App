@@ -34,7 +34,7 @@ Window {
         StackView{
             id: stack
             anchors.fill: parent
-            initialItem: "MainPage.qml"
+            initialItem: "Home.qml"
         }
     }
 }

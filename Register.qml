@@ -253,6 +253,9 @@ Item {
                         topMargin: 20
                         horizontalCenter: parent.horizontalCenter
                     }
+                    onClicked:{
+                        stack.push("Login.qml")
+                    }
                 }
             }
         }
