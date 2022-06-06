@@ -1,15 +1,9 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 
-/*
-  TO DO literally
 
-  1. If the user enters an empty field, then make the title to be "Empty To-Do List"
-  2. Focus on the title, and on text accepted, focus on the description
-  3. Link all the qml pages together
-  */
 
-Item {
+FocusScope {
     Rectangle{
         id: background
         anchors.fill: parent
@@ -355,6 +349,7 @@ Item {
                                     }
                                     onClicked: {
                                         textBox.visible = false
+
                                         roundButton.visible = true
                                         todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
                                         enterTitle.text = ""

@@ -76,6 +76,7 @@ Item {
                 height: 50
                 text: qsTr("Next")
                 font.family: "Courier"
+                focus: true
 
                 anchors{
                     right: row1.right
@@ -87,6 +88,7 @@ Item {
                 onClicked: {
                     console.log("Next Page Activated")
                     stack.push("Login.qml")
+                    focus = false
                 }
             }
         }

@@ -1,8 +1,13 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 
-Item {
+FocusScope {
     id: root
+    focus: true
+    Component.onCompleted: {
+        nickNameEnter.forceActiveFocus()
+    }
+
     Image{
         id: backgroundImage
         source:"qrc:/appImages/3a.jpg"
@@ -22,7 +27,7 @@ Item {
 
             anchors{
                 right: backgroundImage.right
-                rightMargin: 100 //permissible dimension
+                rightMargin: (backgroundImage.width - frame.width) / 3
                 verticalCenter: parent.verticalCenter
             }
 
@@ -31,10 +36,7 @@ Item {
                 height: 200
                 spacing: 20
                 opacity: 1
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: parent.top
+                anchors.fill: parent
 
 
                 //to be made dynamic
@@ -56,21 +58,26 @@ Item {
                 //to be made dynamic
                 TextField {
                     id: nickNameEnter
-                    height: frame.height / 40
                     width: column.width - 30
+                    height: 22
                     placeholderText: qsTr("Typing? ...")
+
                     anchors{
                         left: column.left
                         leftMargin: 10
                         top: nickName.bottom
                         topMargin: 20
                     }
+                    verticalAlignment: TextField.AlignVCenter
+                    onEditingFinished: focus = false
+                    onAccepted: passwordEnter.forceActiveFocus()
+                    onPressed:  focus = true
                 }
 
                 Label {
                     id: avartar
                     text: qsTr("Choose your favorite Avatar")
-                    font.pointSize: frame.height / 40
+                    font.pointSize: nickNameEnter.height * 0.5
                     font.family: "Courier"
                     font.bold: true
                     anchors{
@@ -115,6 +122,7 @@ Item {
                                 av3.backgroundColor = "white"
                                 av4.backgroundColor = "white"
                                 av5.backgroundColor = "white"
+                                passwordEnter.focus = true
                             }
                         }
                     }
@@ -139,6 +147,7 @@ Item {
                                av3.backgroundColor = "white"
                                av4.backgroundColor = "white"
                                av5.backgroundColor = "white"
+                                passwordEnter.focus = true
                             }
                         }
                     }
@@ -162,6 +171,7 @@ Item {
                                 av2.backgroundColor = "white"
                                 av4.backgroundColor = "white"
                                 av5.backgroundColor = "white"
+                                passwordEnter.focus = true
                             }
                         }
                     }
@@ -185,6 +195,7 @@ Item {
                                 av2.backgroundColor = "white"
                                 av3.backgroundColor = "white"
                                 av5.backgroundColor = "white"
+                                passwordEnter.focus = true
                             }
                         }
                     }
@@ -208,6 +219,7 @@ Item {
                                 av2.backgroundColor = "white"
                                 av3.backgroundColor = "white"
                                 av4.backgroundColor = "white"
+                                passwordEnter.focus = true
                             }
                         }
                     }
@@ -231,10 +243,14 @@ Item {
                 //to be made dynamic
                 TextField {
                     id: passwordEnter
-                    height: frame.height / 40
                     width: column.width - 30
+                    height: 22
                     placeholderText: qsTr("Enter your password here ...")
                     echoMode: "Password"
+//                    focus: false
+                    onEditingFinished: focus = false
+                    onAccepted: nickNameEnter.forceActiveFocus()
+                    verticalAlignment: TextField.AlignVCenter
                     anchors{
                         left: column.left
                         leftMargin: 10
@@ -254,6 +270,8 @@ Item {
                         horizontalCenter: parent.horizontalCenter
                     }
                     onClicked:{
+                        nickNameEnter.focus = false
+                        passwordEnter.focus = false
                         stack.push("Login.qml")
                     }
                 }
