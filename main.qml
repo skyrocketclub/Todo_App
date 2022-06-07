@@ -6,8 +6,19 @@ import QtQuick.Controls 2.3
   WHAT'S THE WORKORDER BRO?
 TO DO
 
-1. Make the todo take only the title and abandon description
-2. Make the GUI work smoothly, that is the foundation for the Backend...
+1. Sort the issue of the title bar expanding (But that will be later --- Last thing)
+2. Introduce Priority and assign the colors based on the priorities chosen by the user
+        Urgent and Important (GREEN)
+        Not Urgent and Important ( ORANGE )
+        Urgent and Not Important (YELLO)
+        Not Urgent Not Important ( RED )
+        No Category (BLUE) -- DEFAULT
+3. Make a Delete all entries button
+
+3. Implement the Categories
+         A stand-by Color code is made available in the user section
+         Upon the user's entry He selects A Category, default category is no category which is blue
+
 
 C++ BackEnd
 

@@ -42,7 +42,6 @@ FocusScope {
                     anchors{
                         top: rectangle.top
                         topMargin: 80
-//                        horizontalCenter: parent.horizontalCenter
                     }
 
                     Label {
@@ -135,12 +134,9 @@ FocusScope {
                                 left: rectangle.right
                                 leftMargin: 20
                             }
-
                             property string title
-                            property string des
-
                             title: _title
-                            des: _des
+
 
                             Row{
                                 id:taskRow
@@ -182,21 +178,20 @@ FocusScope {
                                             id: titleShow
                                             text: dlg.title
                                             font.bold : true
-                                            font.pointSize: dlgTexts.height * 0.25
-                                            anchors.top: dlgTexts.top
-                                            anchors.topMargin: 0.1
+                                            font.pointSize: dlgTexts.height * 0.4
+                                            anchors.verticalCenter: dlgTexts.verticalCenter
                                            }
-                                        Label{
-                                            id: desShow
-                                            text: dlg.des
-                                            font.pointSize: dlgTexts.height * 0.20
+//                                        Label{
+//                                            id: desShow
+//                                            text: dlg.des
+//                                            font.pointSize: dlgTexts.height * 0.20
 
-                                            anchors.top: titleShow.bottom
-                                            anchors.topMargin: 0.2
+//                                            anchors.top: titleShow.bottom
+//                                            anchors.topMargin: 0.2
 
 
-                                            wrapMode: Label.WrapAtWordBoundaryOrAnywhere
-//                                            onPaintedWidthChanged:{
+//                                            wrapMode: Label.WrapAtWordBoundaryOrAnywhere
+////                                            onPaintedWidthChanged:{
 //                                                if (paintedWidth>dlgTexts.width){
 //                                                    dlgTexts.height = dlgTexts.height + 1 //increasing column size
 //                                                    dlg.height = dlgTexts.height
@@ -218,7 +213,7 @@ FocusScope {
 ////                                                }
 
 //                                            }
-                                        }
+//                                        }
 
                                     }
                                     Row{
@@ -250,9 +245,9 @@ FocusScope {
                                                 id: editMouse
                                                 anchors.fill: parent
                                                 onClicked: {
+                                                    enterTitle.forceActiveFocus()
                                                     textBox.visible = true
                                                     enterTitle.text = title
-                                                    enterDescription.text = des
                                                     button.text = "SAVE EDIT"
                                                     todoModel.remove(index)
                                                 }
@@ -293,7 +288,7 @@ FocusScope {
                     Row {
                         id: functionTab
                         width: todoFrame.width
-                        height: todoFrame.height / 4
+                        height: todoFrame.height / 6
                         anchors{
                             bottom: todoFrame.bottom
                             bottomMargin: 10
@@ -336,7 +331,11 @@ FocusScope {
                                     focus: true
                                     onAccepted: {
                                         focus = false
-                                        enterDescription.focus = true
+                                        textBox.visible = false
+                                        roundButton.visible = true
+//                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
+                                        todoModel.append({"_title":enterTitle.text})
+                                        enterTitle.text = ""
                                     }
                                 }
 
@@ -351,42 +350,13 @@ FocusScope {
                                         textBox.visible = false
 
                                         roundButton.visible = true
-                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
+//                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
+                                        todoModel.append({"_title":enterTitle.text})
                                         enterTitle.text = ""
-                                        enterDescription.text = ""
+//                                        enterDescription.text = ""
                                     }
                                 }
                             }
-
-                            Label {
-                                id: description
-                                text: qsTr("Description")
-                            }
-
-                            Rectangle {
-                                id: enterDescriptionFrame
-                                width: textBox.width
-                                height: textBox.height - (10 + title.height + enterTitle.height + description.height)
-                                color: "#ffffff"
-
-
-                                TextField {
-                                    id: enterDescription
-                                    anchors.fill: parent
-                                    layer.mipmap: true
-                                    wrapMode: TextField.WrapAtWordBoundaryOrAnywhere
-                                    placeholderText: qsTr("Text Field")
-                                    onAccepted: {
-                                        focus = false
-                                        textBox.visible = false
-                                        roundButton.visible = true
-                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
-                                        enterTitle.text = ""
-                                        enterDescription.text = ""
-                                    }
-                                }
-                            }
-
                         }
 
                         RoundButton {
