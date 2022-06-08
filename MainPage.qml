@@ -4,6 +4,8 @@ import QtQuick.Controls 2.3
 
 
 FocusScope {
+    property int status: 1
+
     Rectangle{
         id: background
         anchors.fill: parent
@@ -104,6 +106,19 @@ FocusScope {
                     width: column.width
                     height: column.height * 0.8 //
                     color: "#ffffff"
+                    focus: true
+                    Keys.onReturnPressed: {
+                        if(status === 1){
+                            textBox.visible = true
+                            roundButton.visible = false
+                            enterTitle.focus = true
+//                            status = 0
+                        }
+                        else{
+                            status = 1
+                        }
+                    }
+
 
                     anchors{
                         top: dateFrame.bottom
@@ -328,7 +343,7 @@ FocusScope {
                                     anchors{
                                         verticalCenter: parent.verticalCenter
                                     }
-                                    focus: true
+//                                    focus: true
                                     onAccepted: {
                                         focus = false
                                         textBox.visible = false
@@ -336,6 +351,8 @@ FocusScope {
 //                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
                                         todoModel.append({"_title":enterTitle.text})
                                         enterTitle.text = ""
+                                        status = 0
+                                        todoFrame.focus = true
                                     }
                                 }
 
@@ -374,7 +391,7 @@ FocusScope {
                                 textBox.visible = true
                                 roundButton.visible = false
                                 enterTitle.focus = true
-
+                                status = 0
                             }
                         }
                     }

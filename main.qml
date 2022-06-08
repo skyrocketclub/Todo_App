@@ -3,15 +3,19 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.3
 
 /*
+  Feature Implementations
+        Not Urgent and Important ( ORANGE )
+        Urgent and Not Important (YELLO)
+        Not Urgent Not Important ( RED )
+  */
+/*
   WHAT'S THE WORKORDER BRO?
 TO DO
 
 1. Sort the issue of the title bar expanding (But that will be later --- Last thing)
 2. Introduce Priority and assign the colors based on the priorities chosen by the user
-        Urgent and Important (GREEN)
-        Not Urgent and Important ( ORANGE )
-        Urgent and Not Important (YELLO)
-        Not Urgent Not Important ( RED )
+        Very Important (GREEN)
+
         No Category (BLUE) -- DEFAULT
 3. Make a Delete all entries button
 
