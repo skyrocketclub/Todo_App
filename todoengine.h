@@ -1,28 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.3
-
 /*
-  Feature Implementations
-        Not Urgent and Important ( ORANGE )
-        Urgent and Not Important (YELLO)
-        Not Urgent Not Important ( RED )
-
-1. Sort the issue of the title bar expanding (But that will be later --- Last thing)
-2. Introduce Priority and assign the colors based on the priorities chosen by the user
-        Very Important (GREEN)
-
-        No Category (BLUE) -- DEFAULT
-3. Make a Delete all entries button
-
-3. Implement the Categories
-         A stand-by Color code is made available in the user section
-         Upon the user's entry He selects A Category, default category is no category which is blue
-
-
-  */
-
-/*
+ *
   WHAT'S THE WORKORDER BRO?
 TO DO
 
@@ -48,8 +25,8 @@ How to go about it
 
 1. Familiarize yourself with qt file concepts like
 
-    a. folders, 
-    b. file creation, 
+    a. folders,
+    b. file creation,
     c. writing into the files
     d. opening, closing and deleting and replacing files...
 
@@ -72,7 +49,7 @@ How to go about it
 
     HOW WE ARE TO ACHIEVE IT
 
-    1. Make A backend cpp
+    1. Make A backend cpp..........Done
     2. Make QProperties that
     (Upon Registration)
         a. Collects the Nickname of the user
@@ -92,33 +69,33 @@ How to go about it
         j. Collects Deletes and RUns the rebuilds of the txt files as well...
 
 
-  */
+
+ * */
+
+#ifndef TODOENGINE_H
+#define TODOENGINE_H
+
+#include <QObject>
+
+class TodoEngine : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY nicknameChanged)
+
+public:
+    explicit TodoEngine(QObject *parent = nullptr);
+
+    QString nickname();
+    void setNickname(QString name);
 
 
-
-Window {
-    id: main
-    width: 640
-    height: 480
-    minimumHeight: 480
-    minimumWidth: 640
-    visible: true
-    title: qsTr("TO DO APP")
-
-    //Details of the user...
-    property string nickname: ""
-    property string password: ""
-    property int avatar: 1
+private:
+    QString nickname_{};
+    int avartar{};
 
 
-    Loader{
-        id: loader
-        anchors.fill: parent
-        StackView{
-            id: stack
-            anchors.fill: parent
-            initialItem: "Home.qml"
-            focus: true
-        }
-    }
-}
+signals:
+    void nicknameChanged();
+};
+
+#endif // TODOENGINE_H

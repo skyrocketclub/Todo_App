@@ -1,6 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+//Add the following..............
+#include <QQmlContext>
+#include "todoengine.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -8,6 +12,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+
+    //Make your input here
+    qmlRegisterType<TodoEngine>("com.company.todoengine",1,0,"Todoengine");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
