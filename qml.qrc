@@ -21,4 +21,7 @@
         <file>Avatars/4.jpg</file>
         <file>Avatars/5.jpg</file>
     </qresource>
+    <qresource prefix="/files">
+        <file>Readme.txt</file>
+    </qresource>
 </RCC>

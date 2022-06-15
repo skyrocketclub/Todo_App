@@ -1,11 +1,16 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
+import com.company.todoengine 1.0
 
 FocusScope {
     id: root
     focus: true
     Component.onCompleted: {
         nickNameEnter.forceActiveFocus()
+    }
+
+    Todoengine{
+        id: todoengine
     }
 
     Image{
@@ -70,7 +75,10 @@ FocusScope {
                     }
                     verticalAlignment: TextField.AlignVCenter
                     onEditingFinished: focus = false
-                    onAccepted: passwordEnter.forceActiveFocus()
+                    onAccepted:{
+                        todoengine.nickname = nickNameEnter.text
+                        passwordEnter.forceActiveFocus()
+                    }
                     onPressed:  focus = true
                 }
 
@@ -123,6 +131,7 @@ FocusScope {
                                 av4.backgroundColor = "white"
                                 av5.backgroundColor = "white"
                                 passwordEnter.focus = true
+                                todoengine.avatar = 1
                             }
                         }
                     }
@@ -148,6 +157,7 @@ FocusScope {
                                av4.backgroundColor = "white"
                                av5.backgroundColor = "white"
                                 passwordEnter.focus = true
+                                 todoengine.avatar = 2
                             }
                         }
                     }
@@ -172,6 +182,7 @@ FocusScope {
                                 av4.backgroundColor = "white"
                                 av5.backgroundColor = "white"
                                 passwordEnter.focus = true
+                                 todoengine.avatar = 3
                             }
                         }
                     }
@@ -196,6 +207,7 @@ FocusScope {
                                 av3.backgroundColor = "white"
                                 av5.backgroundColor = "white"
                                 passwordEnter.focus = true
+                                 todoengine.avatar = 4
                             }
                         }
                     }
@@ -220,6 +232,7 @@ FocusScope {
                                 av3.backgroundColor = "white"
                                 av4.backgroundColor = "white"
                                 passwordEnter.focus = true
+                                 todoengine.avatar = 5
                             }
                         }
                     }
@@ -249,7 +262,10 @@ FocusScope {
                     echoMode: "Password"
 //                    focus: false
                     onEditingFinished: focus = false
-                    onAccepted: nickNameEnter.forceActiveFocus()
+                    onAccepted:{
+                        todoengine.password = passwordEnter.text
+                        nickNameEnter.forceActiveFocus()
+                    }
                     verticalAlignment: TextField.AlignVCenter
                     anchors{
                         left: column.left
@@ -272,6 +288,7 @@ FocusScope {
                     onClicked:{
                         nickNameEnter.focus = false
                         passwordEnter.focus = false
+                        todoengine.openFile
                         stack.push("Login.qml")
                     }
                 }

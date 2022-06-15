@@ -52,8 +52,8 @@ How to go about it
     1. Make A backend cpp..........Done
     2. Make QProperties that
     (Upon Registration)
-        a. Collects the Nickname of the user
-        b. Collects the Avartar of the user & the password of the user
+        a. Collects the Nickname of the user  ............ Done
+        b. Collects the Avartar of the user & the password of the user................Done
         c. Function registers user that opens a file with the user's Nickname, that has all the above details as the first time but '#' separated
 
 
@@ -76,26 +76,45 @@ How to go about it
 #define TODOENGINE_H
 
 #include <QObject>
+#include <QDebug>
+#include <QFile>
+#include <QDir>
 
 class TodoEngine : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY nicknameChanged)
+    Q_PROPERTY(QString password READ password WRITE setPassword)
+    Q_PROPERTY(int avatar READ avatar WRITE setAvatar)
+    Q_PROPERTY(int openFile READ setOpenFile NOTIFY openFileChanged)
+    Q_PROPERTY(int userexists NOTIFY userexists)
 
 public:
     explicit TodoEngine(QObject *parent = nullptr);
 
-    QString nickname();
-    void setNickname(QString name);
+    //Declaring the accessor functions...
+    QString nickname(); //getter for the nickname
+    void setNickname(QString name);//setter for the nickname
+    QString password(); //getter for the password
+    void setPassword(QString pass); //setter for the password
+    int avatar();
+    void setAvatar(int choice);
+
+    //Function to store details of a registered user...
+    int setOpenFile(); //Function to edit the file of the new user...
+
 
 
 private:
     QString nickname_{};
-    int avartar{};
-
+    QString password_{};
+    int avatar_{};
+//    void openUserFile(QString nickname);
 
 signals:
     void nicknameChanged();
+    void openFileChanged();
+    void userexists();
 };
 
 #endif // TODOENGINE_H
