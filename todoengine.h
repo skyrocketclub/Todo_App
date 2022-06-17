@@ -54,13 +54,27 @@ How to go about it
     (Upon Registration)
         a. Collects the Nickname of the user  ............ Done
         b. Collects the Avartar of the user & the password of the user................Done
-        c. Function registers user that opens a file with the user's Nickname, that has all the above details as the first time but '#' separated
+        c. Function registers user that opens a file with the user's Nickname, that has all the above details as the first time but '#' separated.............Done
 
 
     (upon Logging in...)
-        d. QProperty that sets the current user to be the nickname so that the file is t eone accessed at any time
-        e. The QTimer that loads when the user clicks on Login
+        d. QProperty that sets the current user to be the nickname so that the file is the one accessed at any time............Done
         f. The Error Message shown if the user enters wrong details
+            - Create a new label called the feedback string that is normally not visible
+            - When the login button is pressed
+                1 - Check if the user is registered in the first place
+                    if he is{
+                            Check if the password correlates{
+                                if it does : Login Successful
+                                if it does not: premium tears
+                            }
+                    }
+                    if not{
+                            Feedback string: user is not registered...
+                    }
+
+        e. The QTimer that loads when the user clicks on Login
+
 
     (Upon Usage)
         g. Functions that Collects inputs (upon addition) and adds it to files with Numbers
@@ -79,6 +93,7 @@ How to go about it
 #include <QDebug>
 #include <QFile>
 #include <QDir>
+#include <QDataStream>
 
 class TodoEngine : public QObject
 {
@@ -87,7 +102,11 @@ class TodoEngine : public QObject
     Q_PROPERTY(QString password READ password WRITE setPassword)
     Q_PROPERTY(int avatar READ avatar WRITE setAvatar)
     Q_PROPERTY(int openFile READ setOpenFile NOTIFY openFileChanged)
-    Q_PROPERTY(int userexists NOTIFY userexists)
+    Q_PROPERTY(int userexists READ userexists)
+    Q_PROPERTY(QString currentuser READ CurrentUser WRITE setCurrentUser)
+    Q_PROPERTY(QString currentpass READ CurrentPass WRITE setCurrentPass)
+    Q_PROPERTY(QString loginDetails READ loginDetails)
+
 
 public:
     explicit TodoEngine(QObject *parent = nullptr);
@@ -103,18 +122,26 @@ public:
     //Function to store details of a registered user...
     int setOpenFile(); //Function to edit the file of the new user...
 
+    //Function that sets the current user and his password
+    void setCurrentPass(QString user);
+    void setCurrentUser(QString name);
+    QString CurrentUser();
+    QString CurrentPass();
+    QString loginDetails();
+    int userexists();
 
 
 private:
     QString nickname_{};
     QString password_{};
     int avatar_{};
+    QString currentuser_{};
+    QString currentpass_{};
 //    void openUserFile(QString nickname);
 
 signals:
     void nicknameChanged();
     void openFileChanged();
-    void userexists();
 };
 
 #endif // TODOENGINE_H

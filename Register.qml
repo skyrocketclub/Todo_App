@@ -79,6 +79,10 @@ FocusScope {
                         todoengine.nickname = nickNameEnter.text
                         passwordEnter.forceActiveFocus()
                     }
+                    onFocusChanged: {
+                        todoengine.nickname = nickNameEnter.text
+                    }
+
                     onPressed:  focus = true
                 }
 
@@ -266,6 +270,10 @@ FocusScope {
                         todoengine.password = passwordEnter.text
                         nickNameEnter.forceActiveFocus()
                     }
+                    onFocusChanged: {
+                        todoengine.password = passwordEnter.text
+                    }
+
                     verticalAlignment: TextField.AlignVCenter
                     anchors{
                         left: column.left

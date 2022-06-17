@@ -78,3 +78,80 @@ int TodoEngine::setOpenFile()
 
     return 0;
 }
+
+void TodoEngine::setCurrentPass(QString pass)
+{
+    currentpass_ = pass;
+    qInfo()<<"Current Pass: "<<currentpass_<<"\n";
+}
+
+void TodoEngine::setCurrentUser(QString name)
+{
+    currentuser_ = name;
+    qInfo()<<"Current Name: "<<currentuser_<<"\n";
+}
+
+QString TodoEngine::CurrentUser()
+{
+    return currentuser_;
+}
+
+QString TodoEngine::CurrentPass()
+{
+    return currentpass_;
+}
+
+QString TodoEngine::loginDetails()
+{
+    QString path = "files/" + currentuser_ + ".txt";
+    QFile file(path);
+    QString userLine;
+
+    if(file.open(QIODevice::ReadOnly)){
+        userLine = file.readLine();
+        file.close();
+    }else{
+        qInfo()<<file.errorString();
+    }
+    return userLine;
+}
+
+int TodoEngine::userexists()
+{
+    QString path = "files/" + currentuser_ + ".txt";
+    QFile file(path);
+    int status{0};
+
+    if(file.exists()){
+        status = 1;
+    }
+    return status;
+}
+
+//int TodoEngine::login()
+//{
+//    /*
+//     * Open a file with the current user
+//     *
+//     * If The file does not exist, return 1 --- Invalid user
+//     * If the password is wrong, return 2 --- Wrong Password
+//     * If the login is successful, return 0...
+//     * */
+//    int success {0};
+//    QString path{};
+//    path = "files/" + currentuser_ + ".txt";
+//    QFile file(path); //Open a file with the name of Path...
+
+
+//    QString name{},pass{};
+//    //Work on reading the data from txt files with delimeters with Java Script
+
+//    if(file.open(QIODevice::ReadOnly)){
+//        qInfo()<<"File Opened!\n";
+
+//        file.close();
+//    }else{
+//        qInfo()<<file.errorString();
+//    }
+//    return success;
+//}

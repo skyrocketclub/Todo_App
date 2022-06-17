@@ -7,6 +7,7 @@
         <file>Register.qml</file>
         <file>MyAvatar.qml</file>
         <file>MainPage.qml</file>
+        <file>TODO.js</file>
     </qresource>
     <qresource prefix="/appImages">
         <file>1a.jpg</file>

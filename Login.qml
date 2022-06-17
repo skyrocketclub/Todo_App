@@ -1,8 +1,15 @@
 import QtQuick
 import QtQuick.Controls 2.3
+import com.company.todoengine 1.0
+import "TODO.js" as Code
 
 FocusScope {
     id: root
+    property int loginSuccess: 0
+    property string logindetails: ""
+    property string passkey: ""
+    property int validuser: 0
+
     Rectangle{
         id: background
         color: "#2752a0"
@@ -10,6 +17,10 @@ FocusScope {
         anchors.fill: parent
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
+
+        Todoengine{
+            id: todoengine
+        }
 
         Rectangle{
             id: loginBox
@@ -93,8 +104,13 @@ FocusScope {
                         activeFocusOnPress: true
                         onEditingFinished: {
 //                            focus = false
+                            todoengine.currentuser = textInput.text
                             passwordInput.focus = true
                         }
+                        onFocusChanged: {
+                              todoengine.currentuser = textInput.text
+                        }
+
                         anchors{
                             fill: textFrame
                         }
@@ -145,7 +161,12 @@ FocusScope {
                         onEditingFinished: {
 //                           passwordInput.focus= false
                             textInput.focus = true
+                            todoengine.currentpass = passwordInput.text
                         }
+                        onFocusChanged: {
+                            todoengine.currentpass = passwordInput.text
+                        }
+
                         anchors{
                             fill: passwordFrame
                         }
@@ -160,17 +181,27 @@ FocusScope {
                     width: loginBox.width - 50
                     text: qsTr("Login now")
                     onClicked:{
-    //                    stack.push("loading.qml")
-//                        textInput.focus = false
-//                        passwordInput.focus = false
-//                        focus = false
-                         stack.push("MainPage.qml")
+                        validuser = todoengine.userexists
+                        if(validuser === 1){
+                            logindetails = todoengine.loginDetails
+                            passkey = Code.passget(logindetails)
+                            if(passkey === passwordInput.text){
+                                console.log("Password Correct")
+                                stack.push("MainPage.qml")
+                            }
+                            else{
+                                console.log("Wrong Password")
+                                feedback.visible = true
+                                feedback.text = "Wrong Password"
+                                feedback.color = "red"
+                            }
+                        }
+                            else{
+                            feedback.visible = true
+                            feedback.text = "Invalid User"
+                            feedback.color = "red"
+                        }
                     }
-
-    //                anchors{
-    //                    top: passwordInput.bottom
-    //                    topMargin: 20
-    //                }
                 }
 
                 Label{
@@ -193,13 +224,20 @@ FocusScope {
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
-//                            //Take the user to the register page
-//                            textInput.focus = false
-//                            passwordInput.focus = false
-//                            loginNow.focus = false
-
                             stack.push("Register.qml")
                         }
+                    }
+                }
+
+                Label {
+                    id: feedback
+                    text: qsTr("Login Successful")
+                    font.pointSize: 9
+                    visible: false
+                    anchors{
+                        top: register.bottom
+                        topMargin: 10
+                        horizontalCenter: parent.horizontalCenter
                     }
                 }
             }
