@@ -8,7 +8,11 @@ FocusScope {
     property int loginSuccess: 0
     property string logindetails: ""
     property string passkey: ""
+    property string user : ""
+    property int avatar : 0
     property int validuser: 0
+
+
 
     Rectangle{
         id: background
@@ -187,7 +191,18 @@ FocusScope {
                             passkey = Code.passget(logindetails)
                             if(passkey === passwordInput.text){
                                 console.log("Password Correct")
-                                stack.push("MainPage.qml")
+
+                                //setting the current user in the backend
+                                todoengine.currentuser = textInput.text.toLowerCase()
+                                console.log("Current user: " + textInput.text.toLowerCase())
+
+                                //getting the users details for the main page
+                                user = Code.nameget(logindetails)
+                                rootmain.nick = user
+                                avatar = Code.avatarget(logindetails)
+                                rootmain.avatar = avatar
+
+                                stack.push("loading.qml")
                             }
                             else{
                                 console.log("Wrong Password")

@@ -13,3 +13,10 @@ function passget(line) {
     console.log(pass)
     return pass
 }
+
+function avatarget(line){
+    var avatar;
+    const myArray = line.split("#");
+    avatar = myArray[2]
+    return avatar
+}

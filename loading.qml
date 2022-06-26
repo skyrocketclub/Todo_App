@@ -1,11 +1,33 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
+import com.company.todoengine 1.0
 
+
+/*
+    e. The QTimer that loads when the user clicks on Login
+
+    Engage this Page
+    after 3 seconds
+    a signal is emitted...
+    once the signal is emitted, push the main page to the stack
+  */
 Item {
     Rectangle{
         id: frame
         color: "#8382e9"
         anchors.fill: parent
+
+        Component.onCompleted: {
+            todoengine.timeoutStart
+        }
+
+        Todoengine{
+            id: todoengine
+            onEndloader: {
+                todoengine.timeoutStop
+                stack.push("MainPage.qml")
+            }
+        }
 
         Row {
             id: row
@@ -23,8 +45,8 @@ Item {
                 height: 70
 
                 anchors{
-                    left: row.left
-                    leftMargin: 100
+                    right: label.left
+                    rightMargin: 10
                 }
             }
 
@@ -34,9 +56,8 @@ Item {
                 font.pointSize: 20
                 font.family: "Courier"
                 anchors{
-                    left:busyIndicator.right
-                    leftMargin: 50
-                    verticalCenter: busyIndicator.verticalCenter
+                    verticalCenter: parent.verticalCenter
+                    horizontalCenter: parent.horizontalCenter
                 }
             }
         }

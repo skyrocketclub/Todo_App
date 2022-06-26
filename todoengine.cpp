@@ -3,7 +3,8 @@
 TodoEngine::TodoEngine(QObject *parent)
     : QObject{parent}
 {
-
+    timer.setInterval(3000);
+    connect(&timer,&QTimer::timeout,this,&TodoEngine::timeout);
 }
 
 QString TodoEngine::nickname()
@@ -88,7 +89,8 @@ void TodoEngine::setCurrentPass(QString pass)
 void TodoEngine::setCurrentUser(QString name)
 {
     currentuser_ = name;
-    qInfo()<<"Current Name: "<<currentuser_<<"\n";
+    nickname_ = name;
+    qInfo()<<"Current Name Changed Successfully: "<<currentuser_<<"\n";
 }
 
 QString TodoEngine::CurrentUser()
@@ -108,7 +110,8 @@ QString TodoEngine::loginDetails()
     QString userLine;
 
     if(file.open(QIODevice::ReadOnly)){
-        userLine = file.readLine();
+        userLine = file.readLine(); //sends the user name and the password to the front-end
+        qInfo()<<"Current User: "<<currentuser_<<"\n";
         file.close();
     }else{
         qInfo()<<file.errorString();
@@ -128,30 +131,50 @@ int TodoEngine::userexists()
     return status;
 }
 
-//int TodoEngine::login()
-//{
-//    /*
-//     * Open a file with the current user
-//     *
-//     * If The file does not exist, return 1 --- Invalid user
-//     * If the password is wrong, return 2 --- Wrong Password
-//     * If the login is successful, return 0...
-//     * */
-//    int success {0};
-//    QString path{};
-//    path = "files/" + currentuser_ + ".txt";
-//    QFile file(path); //Open a file with the name of Path...
+void TodoEngine::timeout()
+{
+    emit endloader();
+    qInfo()<<"Time to end loader";
+}
 
+int TodoEngine::timeoutStart()
+{
+    timer.start();
+    return 0;
+}
 
-//    QString name{},pass{};
-//    //Work on reading the data from txt files with delimeters with Java Script
+int TodoEngine::timeoutStop()
+{
+    timer.stop();
+    return 0;
+}
 
-//    if(file.open(QIODevice::ReadOnly)){
-//        qInfo()<<"File Opened!\n";
+QString TodoEngine::date()
+{
+    QString currentDate;
+    QDate date = QDate::currentDate();
+    currentDate = date.toString();
+    return currentDate;
+}
 
-//        file.close();
-//    }else{
-//        qInfo()<<file.errorString();
-//    }
-//    return success;
-//}
+void TodoEngine::setaddEntry(QString entry)
+{
+    qInfo()<<nickname_<<" is the nickname\n";
+    QString path = "./files/";
+    QString currentuser {nickname_};
+    QDir dir(path);
+    QString filename = path + currentuser + ".txt";
+    QFile file(filename);
+    qInfo()<<"Path: "<<filename;
+    if(file.open(QIODevice::Append)){
+        QTextStream stream(&file);
+        stream<<entry<<"\n";
+        qInfo()<<"Write to " <<nickname_<<" Successful";
+        file.close();
+    }
+    else{
+        qInfo()<<file.errorString();
+    }
+
+}
+

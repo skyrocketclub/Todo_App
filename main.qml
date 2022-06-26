@@ -97,8 +97,8 @@ How to go about it
 
 
 
-Window {
-    id: main
+ApplicationWindow {
+    id: rootmain
     width: 640
     height: 480
     minimumHeight: 480
@@ -107,7 +107,7 @@ Window {
     title: qsTr("TO DO APP")
 
     //Details of the user...
-    property string nickname: ""
+    property string nick: ""
     property string password: ""
     property int avatar: 1
 

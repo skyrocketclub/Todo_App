@@ -1,10 +1,60 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
+import com.company.todoengine 1.0
+
+/*
+    (Upon Usage)
+        g. Functions that Collects inputs (upon addition) and adds it to files with Numbers
+        h. The QDate and Time Function that gives the time of the current day...
+        i. Collects edits (and runs the rebuild of the txt files)
+        j. Collects Deletes and RUns the rebuilds of the txt files as well...
 
 
+        PSEUDOCODE
+        DISPLAY THE NICKNAME OF THE USER .... Done
+
+        DISPLAY THE AVATAR OF THE USER ... Done
+
+        DISPLAY THE CURRENT DATE ... Done
+
+1 - WORK ON WRITING TO THE TXT FILES
+     - Once the To Do page is open, it is in the name of a current user
+     - So Create a QProperty and call it entry string
+     - Once you write sth, it is added to the txt file of the person
+
+2 - WORK ON OPENING THE TO DO APP AND LOADING THE TXT FILES INFO
+       - Componen.oncompleted{
+       todoenginedotfetchnumber ---
+       make a while loop to get the entry details for the tasks in the qml page
+        e.g. there are 6 entries
+             fetch me 1 //save in a properti
+             create automatically the object in the list View
+             do for all in the list
+       }
+3 - WORK ON EDITING THE TXT FILES (EDITING INFO AND DELETING INFO AS WELL)
+        - delete the text in the qml page
+        - go to the c++ backend and trace the entry and identify its number
+        - delete the old file and input the vector into a new file w/o the deleted or edited entry
+
+4 - WORK on the text overshooting defect
+    On accepting no empty inputs from the user ... in the user name and password
+    the login button activated upon pressing enter again (upon accepting the Password)
+  */
 
 FocusScope {
     property int status: 1
+    property int avatar: rootmain.avatar
+    property string nickname : rootmain.nick
+    property string date: ""
+
+    Todoengine{
+        id: todoengine
+    }
+
+    Component.onCompleted: {
+        date = todoengine.date
+        todoengine.currentuser = nickname
+    }
 
     Rectangle{
         id: background
@@ -44,11 +94,12 @@ FocusScope {
                     anchors{
                         top: rectangle.top
                         topMargin: 80
+                        horizontalCenter: parent.horizontalCenter
                     }
 
                     Label {
                         id: label
-                        text: qsTr("Nickname")
+                        text: nickname
                         font.pointSize: column1.height/ 10
                         anchors{
 
@@ -66,7 +117,7 @@ FocusScope {
                         Image {
                             id: image
                             anchors.fill: parent
-                            source: "qrc:/qtquickplugin/images/template_image.png"
+                            source: "qrc:/avatar/Avatars/" + avatar.toString() + ".jpg"
                             fillMode: Image.PreserveAspectFit
                         }
                     }
@@ -93,7 +144,7 @@ FocusScope {
 
                     Label {
                         id: label1
-                        text: qsTr("Tasks for the day: ")
+                        text: "Tasks for the day: " + date
                         anchors.verticalCenter: parent.verticalCenter
                         font.bold: true
                         font.pointSize: 16
@@ -348,11 +399,11 @@ FocusScope {
                                         focus = false
                                         textBox.visible = false
                                         roundButton.visible = true
-//                                        todoModel.append({"_title":enterTitle.text,"_des":enterDescription.text})
                                         todoModel.append({"_title":enterTitle.text})
+                                        todoengine.addEntry = enterTitle.text
                                         enterTitle.text = ""
                                         status = 0
-                                        todoFrame.focus = true
+                                        todoFrame.focus = true                                       
                                     }
                                 }
 

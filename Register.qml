@@ -60,7 +60,7 @@ FocusScope {
                 }
 
 
-                //to be made dynamic
+                //
                 TextField {
                     id: nickNameEnter
                     width: column.width - 30
@@ -76,7 +76,7 @@ FocusScope {
                     verticalAlignment: TextField.AlignVCenter
                     onEditingFinished: focus = false
                     onAccepted:{
-                        todoengine.nickname = nickNameEnter.text
+                        todoengine.nickname = nickNameEnter.text.toLowerCase()
                         passwordEnter.forceActiveFocus()
                     }
                     onFocusChanged: {
@@ -127,7 +127,7 @@ FocusScope {
                             anchors.fill: av1
                             onClicked:{
                                 av1.backgroundColor = "green"
-                                main.avatar = av1.avatarNum
+                                rootmain.avatar = av1.avatarNum
                                 console.log ("The Avatar Number is: " + av1.avatarNum + " !")
 
                                 av2.backgroundColor = "white"
@@ -152,7 +152,7 @@ FocusScope {
                             anchors.fill: av2
                             onClicked:{
                                 av2.backgroundColor = "green"
-                                main.avatar = av2.avatarNum
+                                rootmain.avatar = av2.avatarNum
                                 console.log ("The Avatar Number is: " + av2.avatarNum + " !")
 
 
@@ -178,7 +178,7 @@ FocusScope {
                             anchors.fill: av3
                             onClicked:{
                                 av3.backgroundColor = "green"
-                                main.avatar = av3.avatarNum
+                                rootmain.avatar = av3.avatarNum
                                 console.log ("The Avatar Number is: " + av3.avatarNum + " !")
 
                                 av1.backgroundColor = "white"
@@ -203,7 +203,7 @@ FocusScope {
                             anchors.fill: av4
                             onClicked:{
                                 av4.backgroundColor = "green"
-                                main.avatar = av4.avatarNum
+                                rootmain.avatar = av4.avatarNum
                                 console.log ("The Avatar Number is: " + av4.avatarNum + " !")
 
                                 av1.backgroundColor = "white"
@@ -228,7 +228,7 @@ FocusScope {
                             anchors.fill: av5
                             onClicked:{
                                 av5.backgroundColor = "green"
-                                main.avatar = av5.avatarNum
+                                rootmain.avatar = av5.avatarNum
                                 console.log ("The Avatar Number is: " + av5.avatarNum + " !")
 
                                 av1.backgroundColor = "white"

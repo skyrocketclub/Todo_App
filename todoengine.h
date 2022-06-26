@@ -53,13 +53,13 @@ How to go about it
     2. Make QProperties that
     (Upon Registration)
         a. Collects the Nickname of the user  ............ Done
-        b. Collects the Avartar of the user & the password of the user................Done
+        b. Collects the Avatar of the user & the password of the user................Done
         c. Function registers user that opens a file with the user's Nickname, that has all the above details as the first time but '#' separated.............Done
 
 
     (upon Logging in...)
         d. QProperty that sets the current user to be the nickname so that the file is the one accessed at any time............Done
-        f. The Error Message shown if the user enters wrong details
+        f. The Error Message shown if the user enters wrong details ........... Done
             - Create a new label called the feedback string that is normally not visible
             - When the login button is pressed
                 1 - Check if the user is registered in the first place
@@ -73,7 +73,7 @@ How to go about it
                             Feedback string: user is not registered...
                     }
 
-        e. The QTimer that loads when the user clicks on Login
+        e. The QTimer that loads when the user clicks on Login ... Done
 
 
     (Upon Usage)
@@ -94,6 +94,8 @@ How to go about it
 #include <QFile>
 #include <QDir>
 #include <QDataStream>
+#include <QTimer>
+#include <QDate>
 
 class TodoEngine : public QObject
 {
@@ -106,7 +108,10 @@ class TodoEngine : public QObject
     Q_PROPERTY(QString currentuser READ CurrentUser WRITE setCurrentUser)
     Q_PROPERTY(QString currentpass READ CurrentPass WRITE setCurrentPass)
     Q_PROPERTY(QString loginDetails READ loginDetails)
-
+    Q_PROPERTY(int timeoutStart READ timeoutStart )
+    Q_PROPERTY(int timeoutStop READ timeoutStop)
+    Q_PROPERTY(QString date READ date)
+    Q_PROPERTY(QString addEntry WRITE setaddEntry)
 
 public:
     explicit TodoEngine(QObject *parent = nullptr);
@@ -130,6 +135,17 @@ public:
     QString loginDetails();
     int userexists();
 
+    //Functions and variables that handles the loader page
+    void timeout();
+    int timeoutStart();
+    int timeoutStop();
+    QTimer timer;
+
+    //Functions that handle the main to do page
+    QString date();
+    void setaddEntry(QString entry);
+
+
 
 private:
     QString nickname_{};
@@ -142,6 +158,7 @@ private:
 signals:
     void nicknameChanged();
     void openFileChanged();
+    void endloader();
 };
 
 #endif // TODOENGINE_H
