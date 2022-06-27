@@ -17,7 +17,7 @@ import com.company.todoengine 1.0
 
         DISPLAY THE CURRENT DATE ... Done
 
-1 - WORK ON WRITING TO THE TXT FILES
+1 - WORK ON WRITING TO THE TXT FILES ...Done
      - Once the To Do page is open, it is in the name of a current user
      - So Create a QProperty and call it entry string
      - Once you write sth, it is added to the txt file of the person
@@ -46,6 +46,8 @@ FocusScope {
     property int avatar: rootmain.avatar
     property string nickname : rootmain.nick
     property string date: ""
+    property int fetchNumber: 0
+    property int num: 1
 
     Todoengine{
         id: todoengine
@@ -54,6 +56,15 @@ FocusScope {
     Component.onCompleted: {
         date = todoengine.date
         todoengine.currentuser = nickname
+        fetchNumber = todoengine.fetch
+        console.log("Number of lines: " + fetchNumber)
+//        num = fetchNumber -1
+        while(num < fetchNumber){
+            todoengine.numToFetch = num;
+            // line = todoengine.fetchline
+            //load the line to the list ViewSection
+            num++
+        }
     }
 
     Rectangle{

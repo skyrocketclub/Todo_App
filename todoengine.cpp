@@ -42,17 +42,6 @@ void TodoEngine::setAvatar(int choice)
 
 int TodoEngine::setOpenFile()
 {
-    /*
-     * 1 - The C++ program tries to open a file wit the username (to check if it already exists)
-     *          If the name is found,Say, A user with that nickname already exists
-     *          emit to the QML: user exists
-     *
-     *     if the name does not exist
-     *          Open a newfile with the nickname of the user as the file title and safe it in the section
-     *          Then insert the Name, Password and the Avatar number accordingly in the .txt file with # saparator
-     *          Then the file is closed
-     *          Then emit... open file changed so that the status can be reflected in the QML
-     * */
     QString user {};
     QString avatar = QString::number(avatar_); //converting integer to QString
     user = nickname_ + "#" + password_  + "#" + avatar;
@@ -159,22 +148,49 @@ QString TodoEngine::date()
 
 void TodoEngine::setaddEntry(QString entry)
 {
-    qInfo()<<nickname_<<" is the nickname\n";
+
     QString path = "./files/";
     QString currentuser {nickname_};
-    QDir dir(path);
     QString filename = path + currentuser + ".txt";
     QFile file(filename);
     qInfo()<<"Path: "<<filename;
     if(file.open(QIODevice::Append)){
         QTextStream stream(&file);
         stream<<entry<<"\n";
-        qInfo()<<"Write to " <<nickname_<<" Successful";
         file.close();
     }
     else{
         qInfo()<<file.errorString();
     }
+
+}
+
+int TodoEngine::fetchNumber()
+{
+    qInfo()<<"Function Accessed";
+    int number;
+    QString line;
+    QString path = "./files/" + nickname_ + ".txt";
+    QFile file(path);
+    QTextStream in(&file);
+
+    if(file.open(QIODevice::ReadOnly)){
+        while(!in.atEnd()){
+
+            line = in.readLine();
+            qInfo()<<line<<"\n";
+            number++;
+        }
+        file.close();
+    }
+    else{
+        qInfo()<<file.errorString();
+    }
+    return number;
+}
+
+void TodoEngine::setNumToFetch(int num)
+{
 
 }
 

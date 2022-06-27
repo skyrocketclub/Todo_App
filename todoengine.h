@@ -94,6 +94,7 @@ How to go about it
 #include <QFile>
 #include <QDir>
 #include <QDataStream>
+#include <QTextStream>
 #include <QTimer>
 #include <QDate>
 
@@ -112,6 +113,7 @@ class TodoEngine : public QObject
     Q_PROPERTY(int timeoutStop READ timeoutStop)
     Q_PROPERTY(QString date READ date)
     Q_PROPERTY(QString addEntry WRITE setaddEntry)
+    Q_PROPERTY(int fetch READ fetchNumber)
 
 public:
     explicit TodoEngine(QObject *parent = nullptr);
@@ -144,7 +146,7 @@ public:
     //Functions that handle the main to do page
     QString date();
     void setaddEntry(QString entry);
-
+    int fetchNumber();
 
 
 private:
