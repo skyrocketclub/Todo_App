@@ -97,6 +97,7 @@ How to go about it
 #include <QTextStream>
 #include <QTimer>
 #include <QDate>
+#include <QVector>
 
 class TodoEngine : public QObject
 {
@@ -114,6 +115,10 @@ class TodoEngine : public QObject
     Q_PROPERTY(QString date READ date)
     Q_PROPERTY(QString addEntry WRITE setaddEntry)
     Q_PROPERTY(int fetch READ fetchNumber)
+    Q_PROPERTY(int numToFetch WRITE setNumToFetch)
+    Q_PROPERTY(QString fetchLine READ getFetchLine)
+    Q_PROPERTY(QString entryToEdit WRITE setEntryToEdit)
+    Q_PROPERTY(QString editEntry WRITE editEntry)
 
 public:
     explicit TodoEngine(QObject *parent = nullptr);
@@ -147,7 +152,10 @@ public:
     QString date();
     void setaddEntry(QString entry);
     int fetchNumber();
-
+    void setNumToFetch(int num);
+    QString getFetchLine();
+    void setEntryToEdit(QString entry);
+    void editEntry(QString update);
 
 private:
     QString nickname_{};
@@ -155,6 +163,10 @@ private:
     int avatar_{};
     QString currentuser_{};
     QString currentpass_{};
+    int numtoFetch_{};
+    QVector<QString> entries_{};
+    QString entryToEdit_{};
+    int numberOfEntries_{};
 //    void openUserFile(QString nickname);
 
 signals:

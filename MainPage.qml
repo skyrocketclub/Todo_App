@@ -22,12 +22,12 @@ import com.company.todoengine 1.0
      - So Create a QProperty and call it entry string
      - Once you write sth, it is added to the txt file of the person
 
-2 - WORK ON OPENING THE TO DO APP AND LOADING THE TXT FILES INFO
+2 - WORK ON OPENING THE TO DO APP AND LOADING THE TXT FILES INFO ... DONE
        - Componen.oncompleted{
        todoenginedotfetchnumber ---
        make a while loop to get the entry details for the tasks in the qml page
         e.g. there are 6 entries
-             fetch me 1 //save in a properti
+             fetch me 1 //save in a property
              create automatically the object in the list View
              do for all in the list
        }
@@ -48,6 +48,8 @@ FocusScope {
     property string date: ""
     property int fetchNumber: 0
     property int num: 1
+    property string line: " "
+    property int editing : 0
 
     Todoengine{
         id: todoengine
@@ -58,11 +60,10 @@ FocusScope {
         todoengine.currentuser = nickname
         fetchNumber = todoengine.fetch
         console.log("Number of lines: " + fetchNumber)
-//        num = fetchNumber -1
         while(num < fetchNumber){
             todoengine.numToFetch = num;
-            // line = todoengine.fetchline
-            //load the line to the list ViewSection
+            line = todoengine.fetchLine
+            todoModel.append({"_title":line})
             num++
         }
     }
@@ -325,6 +326,8 @@ FocusScope {
                                                     enterTitle.forceActiveFocus()
                                                     textBox.visible = true
                                                     enterTitle.text = title
+                                                    todoengine.entryToEdit = title
+                                                    editing = 1
                                                     button.text = "SAVE EDIT"
                                                     todoModel.remove(index)
                                                 }
@@ -411,7 +414,14 @@ FocusScope {
                                         textBox.visible = false
                                         roundButton.visible = true
                                         todoModel.append({"_title":enterTitle.text})
-                                        todoengine.addEntry = enterTitle.text
+                                        if(editing === 0){
+                                             todoengine.addEntry = enterTitle.text
+                                        }
+                                        if(editing === 1){
+                                            todoengine.editEntry = enterTitle.text
+                                            editing = 0
+                                        }
+
                                         enterTitle.text = ""
                                         status = 0
                                         todoFrame.focus = true                                       

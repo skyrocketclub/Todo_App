@@ -167,8 +167,7 @@ void TodoEngine::setaddEntry(QString entry)
 
 int TodoEngine::fetchNumber()
 {
-    qInfo()<<"Function Accessed";
-    int number;
+    int number {0};
     QString line;
     QString path = "./files/" + nickname_ + ".txt";
     QFile file(path);
@@ -179,6 +178,7 @@ int TodoEngine::fetchNumber()
 
             line = in.readLine();
             qInfo()<<line<<"\n";
+            entries_.push_back(line);
             number++;
         }
         file.close();
@@ -186,11 +186,74 @@ int TodoEngine::fetchNumber()
     else{
         qInfo()<<file.errorString();
     }
+    numberOfEntries_ = number;
     return number;
 }
 
 void TodoEngine::setNumToFetch(int num)
 {
+    numtoFetch_ = num;
 
+}
+
+QString TodoEngine::getFetchLine()
+{
+    QString line = entries_.at(numtoFetch_);
+    qInfo()<<"Sending "<<line;
+    return line;
+}
+
+void TodoEngine::setEntryToEdit(QString entry)
+{
+    entryToEdit_ = entry;
+}
+
+void TodoEngine::editEntry(QString update)
+{
+    /*
+     * While you read from the current user.txt
+     * You write the info to temp.txt
+     * When it gets to what you want to replace, you replace it
+     * Then remove the main file
+     * Then rename the temp file with the name
+     * Here we go?
+     * */
+    QString line;
+    QString path = "./files/" + nickname_ + ".txt";
+    QString tempPath = "./files/temp.txt";
+    QFile file(path);
+    QFile file_2(tempPath);
+    QTextStream in(&file);
+    QTextStream in_2(&file_2);
+    int number {0};
+
+    if(file.open(QIODevice::ReadOnly)){
+            if(file_2.open(QIODevice::WriteOnly)){
+                qInfo()<<"Temp File opened Successfully\n";
+                while(!in.atEnd()){
+
+                    line = in.readLine();
+                   if(line == entryToEdit_){
+                       qInfo()<<line<<" is replaced with "<<update;
+                       in_2<<update<<"\n";
+                   }else{
+                       qInfo()<<line<<" != "<<entryToEdit_;
+                       in_2<<line<<"\n";
+                   }
+
+
+            }
+        }
+        else{
+                qInfo()<<file_2.errorString();
+            }
+        file_2.close();
+        file.close();
+        file.remove();
+        QFile::rename(tempPath,path);
+    }
+    else{
+        qInfo()<<file.errorString();
+    }
 }
 
