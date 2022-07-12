@@ -5,8 +5,13 @@ import com.company.todoengine 1.0
 FocusScope {
     id: root
     focus: true
+
+    property int invalidNick: 0
+    property int invalidPass: 0
+
     Component.onCompleted: {
         nickNameEnter.forceActiveFocus()
+        todoengine.avatar = 1
     }
 
     Todoengine{
@@ -59,13 +64,12 @@ FocusScope {
                     }
                 }
 
-
-                //
                 TextField {
                     id: nickNameEnter
                     width: column.width - 30
                     height: 22
                     placeholderText: qsTr("Typing? ...")
+                    activeFocusOnPress: true
 
                     anchors{
                         left: column.left
@@ -74,16 +78,40 @@ FocusScope {
                         topMargin: 20
                     }
                     verticalAlignment: TextField.AlignVCenter
-                    onEditingFinished: focus = false
+                    onEditingFinished: {
+                        if(nickNameEnter.text === ""){
+                            invalidNick = 1
+                            passwordEnter.forceActiveFocus()
+                        }
+                        else{
+                            invalidNick = 0
+                            todoengine.nickname = nickNameEnter.text.toLowerCase()
+                            passwordEnter.forceActiveFocus()
+                        }
+                    }
                     onAccepted:{
-                        todoengine.nickname = nickNameEnter.text.toLowerCase()
-                        passwordEnter.forceActiveFocus()
-                    }
-                    onFocusChanged: {
-                        todoengine.nickname = nickNameEnter.text
-                    }
+                        if(nickNameEnter.text === ""){
+                            invalidNick = 1
+                            passwordEnter.forceActiveFocus()
+                        }
+                        else{
+                            invalidNick = 0
+                            todoengine.nickname = nickNameEnter.text.toLowerCase()
+                            passwordEnter.forceActiveFocus()
+                        }
 
-                    onPressed:  focus = true
+                    }
+//                    onFocusChanged: {
+//                        if(nickNameEnter.text === ""){
+//                            invalidNick = 1
+//                            passwordEnter.forceActiveFocus()
+//                        }
+//                        else{
+//                            invalidNick = 0
+//                            todoengine.nickname = nickNameEnter.text.toLowerCase()
+////                            passwordEnter.forceActiveFocus()
+//                        }
+//                    }
                 }
 
                 Label {
@@ -264,14 +292,27 @@ FocusScope {
                     height: 22
                     placeholderText: qsTr("Enter your password here ...")
                     echoMode: "Password"
-//                    focus: false
-                    onEditingFinished: focus = false
+                    focus: false
+
                     onAccepted:{
-                        todoengine.password = passwordEnter.text
-                        nickNameEnter.forceActiveFocus()
+                        if(passwordEnter.text === ""){
+                            invalidPass = 1
+                        }
+                        else{
+                            invalidPass = 0
+                            todoengine.password = passwordEnter.text
+                            nickNameEnter.forceActiveFocus()
+                        }
                     }
                     onFocusChanged: {
-                        todoengine.password = passwordEnter.text
+                        if(passwordEnter.text === ""){
+                            invalidPass = 1
+                        }
+                        else{
+                            invalidPass = 0
+                            todoengine.password = passwordEnter.text
+                            nickNameEnter.forceActiveFocus()
+                        }
                     }
 
                     verticalAlignment: TextField.AlignVCenter
@@ -294,10 +335,32 @@ FocusScope {
                         horizontalCenter: parent.horizontalCenter
                     }
                     onClicked:{
-                        nickNameEnter.focus = false
-                        passwordEnter.focus = false
-                        todoengine.openFile
-                        stack.push("Login.qml")
+                        if(invalidNick === 0 && invalidPass === 0){
+//                            nickNameEnter.focus = false
+//                            passwordEnter.focus = false
+//                            root.focus = false
+//                            invalidSignal.focus = false
+//                            rootLogin.focus = true
+                            todoengine.openFile
+                            stack.pop()
+                        }
+                        else{
+                            invalidSignal.visible = true
+                            nickNameEnter.focus = true
+                        }
+                    }
+                }
+
+                Label {
+                    id: invalidSignal
+                    text: "invalid username or password"
+                    color: "red"
+                    visible: false
+                    focus:false
+                    anchors{
+                        top : nextButton.bottom
+                        topMargin: 10
+                        horizontalCenter: parent.horizontalCenter
                     }
                 }
             }

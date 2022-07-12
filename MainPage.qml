@@ -2,45 +2,6 @@ import QtQuick 2.0
 import QtQuick.Controls 2.3
 import com.company.todoengine 1.0
 
-/*
-    (Upon Usage)
-        g. Functions that Collects inputs (upon addition) and adds it to files with Numbers
-        h. The QDate and Time Function that gives the time of the current day...
-        i. Collects edits (and runs the rebuild of the txt files)
-        j. Collects Deletes and RUns the rebuilds of the txt files as well...
-
-
-        PSEUDOCODE
-        DISPLAY THE NICKNAME OF THE USER .... Done
-
-        DISPLAY THE AVATAR OF THE USER ... Done
-
-        DISPLAY THE CURRENT DATE ... Done
-
-1 - WORK ON WRITING TO THE TXT FILES ...Done
-     - Once the To Do page is open, it is in the name of a current user
-     - So Create a QProperty and call it entry string
-     - Once you write sth, it is added to the txt file of the person
-
-2 - WORK ON OPENING THE TO DO APP AND LOADING THE TXT FILES INFO ... DONE
-       - Componen.oncompleted{
-       todoenginedotfetchnumber ---
-       make a while loop to get the entry details for the tasks in the qml page
-        e.g. there are 6 entries
-             fetch me 1 //save in a property
-             create automatically the object in the list View
-             do for all in the list
-       }
-3 - WORK ON EDITING THE TXT FILES (EDITING INFO AND DELETING INFO AS WELL)
-        - delete the text in the qml page
-        - go to the c++ backend and trace the entry and identify its number
-        - delete the old file and input the vector into a new file w/o the deleted or edited entry
-
-4 - WORK on the text overshooting defect
-    On accepting no empty inputs from the user ... in the user name and password
-    the login button activated upon pressing enter again (upon accepting the Password)
-  */
-
 FocusScope {
     property int status: 1
     property int avatar: rootmain.avatar
@@ -50,6 +11,7 @@ FocusScope {
     property int num: 1
     property string line: " "
     property int editing : 0
+    property int c_index : 0
 
     Todoengine{
         id: todoengine
@@ -167,7 +129,7 @@ FocusScope {
                 Rectangle {
                     id: todoFrame
                     width: column.width
-                    height: column.height * 0.8 //
+                    height: column.height * 0.8
                     color: "#ffffff"
                     focus: true
                     Keys.onReturnPressed: {
@@ -175,7 +137,6 @@ FocusScope {
                             textBox.visible = true
                             roundButton.visible = false
                             enterTitle.focus = true
-//                            status = 0
                         }
                         else{
                             status = 1
@@ -207,6 +168,7 @@ FocusScope {
                             height: todoFrame.height / 13
                             radius: 5
                             color: "lightblue"
+                            clip: true
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors{
                                 left: rectangle.right
@@ -259,40 +221,6 @@ FocusScope {
                                             font.pointSize: dlgTexts.height * 0.4
                                             anchors.verticalCenter: dlgTexts.verticalCenter
                                            }
-//                                        Label{
-//                                            id: desShow
-//                                            text: dlg.des
-//                                            font.pointSize: dlgTexts.height * 0.20
-
-//                                            anchors.top: titleShow.bottom
-//                                            anchors.topMargin: 0.2
-
-
-//                                            wrapMode: Label.WrapAtWordBoundaryOrAnywhere
-////                                            onPaintedWidthChanged:{
-//                                                if (paintedWidth>dlgTexts.width){
-//                                                    dlgTexts.height = dlgTexts.height + 1 //increasing column size
-//                                                    dlg.height = dlgTexts.height
-//                                                }
-//                                                if (paintedWidth<dlgTexts.width){
-//                                                    dlgTexts.height = dlgTexts.height - 1 //increasing column size
-//                                                    dlg.height = dlgTexts.height
-//                                                }
-
-//                                            }
-//                                            onPaintedHeightChanged: {
-//                                                if (dlgTexts.height>dlg.height){
-////                                                    dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight + 1
-//                                                    dlg.height = dlgTexts.height
-//                                                }
-////                                                if (dlgTexts.height<dlg.height){
-//////                                                    dlgTexts.height = desShow.paintedHeight + titleShow.paintedHeight - 1
-////                                                    dlg.height = dlgTexts.height
-////                                                }
-
-//                                            }
-//                                        }
-
                                     }
                                     Row{
                                         id: taskRowFunction
@@ -328,6 +256,7 @@ FocusScope {
                                                     enterTitle.text = title
                                                     todoengine.entryToEdit = title
                                                     editing = 1
+                                                    c_index = index
                                                     button.text = "SAVE EDIT"
                                                     todoModel.remove(index)
                                                 }
@@ -353,6 +282,7 @@ FocusScope {
                                                 id: deleteMouse
                                                 anchors.fill: parent
                                                 onClicked: {
+                                                    todoengine.deleteEntry = title
                                                     todoModel.remove(index)
                                                 }
                                             }
@@ -413,11 +343,14 @@ FocusScope {
                                         focus = false
                                         textBox.visible = false
                                         roundButton.visible = true
-                                        todoModel.append({"_title":enterTitle.text})
+
                                         if(editing === 0){
                                              todoengine.addEntry = enterTitle.text
+                                             todoModel.append({"_title":enterTitle.text})
                                         }
                                         if(editing === 1){
+                                            todoModel.insert(c_index,{"_title":enterTitle.text})
+//                                            todoModel.append({"_title":enterTitle.text})
                                             todoengine.editEntry = enterTitle.text
                                             editing = 0
                                         }

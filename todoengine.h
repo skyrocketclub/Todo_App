@@ -119,6 +119,7 @@ class TodoEngine : public QObject
     Q_PROPERTY(QString fetchLine READ getFetchLine)
     Q_PROPERTY(QString entryToEdit WRITE setEntryToEdit)
     Q_PROPERTY(QString editEntry WRITE editEntry)
+    Q_PROPERTY(QString deleteEntry WRITE deleteEntry)
 
 public:
     explicit TodoEngine(QObject *parent = nullptr);
@@ -156,6 +157,7 @@ public:
     QString getFetchLine();
     void setEntryToEdit(QString entry);
     void editEntry(QString update);
+    void deleteEntry(QString entry);
 
 private:
     QString nickname_{};

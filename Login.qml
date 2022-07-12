@@ -4,7 +4,7 @@ import com.company.todoengine 1.0
 import "TODO.js" as Code
 
 FocusScope {
-    id: root
+    id: rootLogin
     property int loginSuccess: 0
     property string logindetails: ""
     property string passkey: ""
@@ -12,7 +12,12 @@ FocusScope {
     property int avatar : 0
     property int validuser: 0
 
+    focus: true
 
+    Component.onCompleted: {
+        rootLogin.forceActiveFocus()
+         textInput.forceActiveFocus()
+    }
 
     Rectangle{
         id: background
@@ -36,7 +41,6 @@ FocusScope {
             Column{
                 id: loginBoxCol
                 anchors.fill: parent
-//                spacing: 10
 
                 Label {
                     id: welcome
@@ -89,38 +93,35 @@ FocusScope {
                     border.color: "#130b0b"
                     border.width: 1
 
+
                     anchors{
                         left: loginBoxCol.left
                         leftMargin: 10
                         top: email.bottom
                         topMargin: 5
                     }
+                        TextInput {
+                            id: textInput
+                            font.pixelSize: 15
+                            wrapMode: Text.Wrap
+                            renderType: Text.NativeRendering
+                            font.italic: true
+                            color: "white"
+                            anchors.fill: parent
+                            focus: true
+                            activeFocusOnPress: true
+                            onEditingFinished: {
+//                                focus = false
+                                todoengine.currentuser = textInput.text
+                                passwordInput.forceActiveFocus()
+                            }
+                            onAccepted:{
+//                                focus = false
+                                todoengine.currentuser = textInput.text
+                                passwordInput.forceActiveFocus()
+                            }
 
-                    TextInput {
-                        id: textInput
-                        font.pixelSize: 15
-                        wrapMode: Text.Wrap
-                        renderType: Text.NativeRendering
-                        font.italic: true
-                        color: "white"
-                        anchors.fill: parent
-                        focus: true
-                        activeFocusOnPress: true
-                        onEditingFinished: {
-//                            focus = false
-                            todoengine.currentuser = textInput.text
-                            passwordInput.focus = true
                         }
-                        onFocusChanged: {
-                              todoengine.currentuser = textInput.text
-                        }
-
-                        anchors{
-                            fill: textFrame
-                        }
-
-                    }
-
                 }
 
                 Label {
@@ -152,29 +153,84 @@ FocusScope {
                         topMargin: 5
                     }
 
-                    TextInput {
-                        id: passwordInput
-                        text: qsTr("")
-                        anchors.fill: parent
-                        font.pixelSize: 15
-                        font.italic: true
-                        focus : false
-                        echoMode: TextInput.Password
+                        TextInput {
+                            id: passwordInput
+                            text: qsTr("")
+                            anchors.fill: parent
+                            font.pixelSize: 15
+                            font.italic: true
+//                            focus: false
+                            activeFocusOnPress: true
+                            echoMode: TextInput.Password
 
-                        color: "white"
-                        onEditingFinished: {
-//                           passwordInput.focus= false
-                            textInput.focus = true
-                            todoengine.currentpass = passwordInput.text
-                        }
-                        onFocusChanged: {
-                            todoengine.currentpass = passwordInput.text
-                        }
+                            color: "white"
+                            onEditingFinished: {
+//                                                      validuser = todoengine.userexists
+                                if(validuser === 1){
+                                    logindetails = todoengine.loginDetails
+                                    passkey = Code.passget(logindetails)
+                                    if(passkey === passwordInput.text){
+                                        console.log("Password Correct")
 
-                        anchors{
-                            fill: passwordFrame
+                                        //setting the current user in the backend
+                                        todoengine.currentuser = textInput.text.toLowerCase()
+                                        console.log("Current user: " + textInput.text.toLowerCase())
+
+                                        //getting the users details for the main page
+                                        user = Code.nameget(logindetails)
+                                        rootmain.nick = user
+                                        avatar = Code.avatarget(logindetails)
+                                        rootmain.avatar = avatar
+
+                                        stack.push("loading.qml")
+                                    }
+                                    else{
+                                        console.log("Wrong Password")
+                                        feedback.visible = true
+                                        feedback.text = "Wrong Password"
+                                        feedback.color = "red"
+                                    }
+                                }
+                                    else{
+                                    feedback.visible = true
+                                    feedback.text = "Invalid User"
+                                    feedback.color = "red"
+                                }
+                            }
+                            onAccepted:{
+                                validuser = todoengine.userexists
+                                if(validuser === 1){
+                                    logindetails = todoengine.loginDetails
+                                    passkey = Code.passget(logindetails)
+                                    if(passkey === passwordInput.text){
+                                        console.log("Password Correct")
+
+                                        //setting the current user in the backend
+                                        todoengine.currentuser = textInput.text.toLowerCase()
+                                        console.log("Current user: " + textInput.text.toLowerCase())
+
+                                        //getting the users details for the main page
+                                        user = Code.nameget(logindetails)
+                                        rootmain.nick = user
+                                        avatar = Code.avatarget(logindetails)
+                                        rootmain.avatar = avatar
+
+                                        stack.push("loading.qml")
+                                    }
+                                    else{
+                                        console.log("Wrong Password")
+                                        feedback.visible = true
+                                        feedback.text = "Wrong Password"
+                                        feedback.color = "red"
+                                    }
+                                }
+                                    else{
+                                    feedback.visible = true
+                                    feedback.text = "Invalid User"
+                                    feedback.color = "red"
+                                }
+                            }
                         }
-                    }
                 }
 
                 Button {
@@ -239,7 +295,8 @@ FocusScope {
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
-                            stack.push("Register.qml")
+//                            rootLogin.focus = false
+                            stack.push("Register.qml")      
                         }
                     }
                 }

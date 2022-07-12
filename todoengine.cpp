@@ -15,7 +15,7 @@ QString TodoEngine::nickname()
 void TodoEngine::setNickname(QString name)
 {
     nickname_ = name;
-    qInfo()<<"Nickname: "<<nickname_<<"\n";
+//    qInfo()<<"Nickname: "<<nickname_<<"\n";
 }
 
 QString TodoEngine::password()
@@ -26,7 +26,7 @@ QString TodoEngine::password()
 void TodoEngine::setPassword(QString pass)
 {
     password_ = pass;
-    qInfo()<<"Password: "<<password_<<"\n";
+//    qInfo()<<"Password: "<<password_<<"\n";
 }
 
 int TodoEngine::avatar()
@@ -72,14 +72,14 @@ int TodoEngine::setOpenFile()
 void TodoEngine::setCurrentPass(QString pass)
 {
     currentpass_ = pass;
-    qInfo()<<"Current Pass: "<<currentpass_<<"\n";
+//    qInfo()<<"Current Pass: "<<currentpass_<<"\n";
 }
 
 void TodoEngine::setCurrentUser(QString name)
 {
     currentuser_ = name;
     nickname_ = name;
-    qInfo()<<"Current Name Changed Successfully: "<<currentuser_<<"\n";
+//    qInfo()<<"Current Name Changed Successfully: "<<currentuser_<<"\n";
 }
 
 QString TodoEngine::CurrentUser()
@@ -210,14 +210,6 @@ void TodoEngine::setEntryToEdit(QString entry)
 
 void TodoEngine::editEntry(QString update)
 {
-    /*
-     * While you read from the current user.txt
-     * You write the info to temp.txt
-     * When it gets to what you want to replace, you replace it
-     * Then remove the main file
-     * Then rename the temp file with the name
-     * Here we go?
-     * */
     QString line;
     QString path = "./files/" + nickname_ + ".txt";
     QString tempPath = "./files/temp.txt";
@@ -242,6 +234,43 @@ void TodoEngine::editEntry(QString update)
                    }
 
 
+            }
+        }
+        else{
+                qInfo()<<file_2.errorString();
+            }
+        file_2.close();
+        file.close();
+        file.remove();
+        QFile::rename(tempPath,path);
+    }
+    else{
+        qInfo()<<file.errorString();
+    }
+}
+
+void TodoEngine::deleteEntry(QString entry)
+{
+    QString line;
+    QString path = "./files/" + nickname_ + ".txt";
+    QString tempPath = "./files/temp.txt";
+    QFile file(path);
+    QFile file_2(tempPath);
+    QTextStream in(&file);
+    QTextStream in_2(&file_2);
+    int number {0};
+
+    if(file.open(QIODevice::ReadOnly)){
+            if(file_2.open(QIODevice::WriteOnly)){
+                qInfo()<<"Temp File opened Successfully\n";
+                while(!in.atEnd()){
+                    line = in.readLine();
+                   if(line == entry){
+                       qInfo()<<line<<" is deleted";
+                   }else{
+                       qInfo()<<line<<" != "<<entry;
+                       in_2<<line<<"\n";
+                   }
             }
         }
         else{
